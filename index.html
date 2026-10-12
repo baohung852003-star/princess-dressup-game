@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Công Chúa Chibi - Game Thay Đồ Phong Cách Nhật Bản 👑🌸</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-pink: #ff7597;
+      --soft-pink: #ffe6ee;
+      --pale-pink: #fff5f8;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --accent-gold: #ffd166;
+      --accent-purple: #b5838d;
+      --accent-lavender: #d8b4f8;
+      --text-dark: #4a3044;
+      --text-soft: #846279;
+      --shadow-kawaii: 0 10px 25px -5px rgba(255, 117, 151, 0.3), 0 8px 10px -6px rgba(255, 117, 151, 0.15);
+      --hair-main: #ff9ebb;
+      --hair-shadow: #ff6b98;
+      --hair-highlight: #fff0f5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      font-family: 'Quicksand', 'M PLUS Rounded 1c', sans-serif;
+      background: linear-gradient(135deg, #ffeef4 0%, #f7e1f5 50%, #e6e6fa 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient floating sparkles */
+    #sparkle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Header Bar */
+    header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid #ffd3e2;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(255, 150, 180, 0.15);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      font-size: 28px;
+      animation: floatHeart 2.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(0px) rotate(-5deg); }
+      100% { transform: translateY(-4px) rotate(5deg); }
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(45deg, #ff4d79, #b14aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-kawaii {
+      background: white;
+      border: 2px solid #ffccd9;
+      color: var(--text-dark);
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 10px rgba(255, 117, 151, 0.12);
+    }
+
+    .btn-kawaii:hover {
+      transform: translateY(-2px) scale(1.04);
+      border-color: var(--primary-pink);
+      box-shadow: 0 6px 16px rgba(255, 117, 151, 0.25);
+      background: var(--pale-pink);
+    }
+
+    .btn-kawaii:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff7597, #ff4f81);
+      color: white;
+      border: none;
+      box-shadow: 0 4px 15px rgba(255, 79, 129, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ff5c84, #ff336a);
+      color: white;
+      box-shadow: 0 6px 20px rgba(255, 79, 129, 0.45);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #ffd166, #ffb703);
+      color: #5c3800;
+      border: none;
+    }
+
+    /* Main Game Layout */
+    .game-container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 24px;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .game-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left: Doll Preview Stage */
+    .stage-card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      box-shadow: var(--shadow-kawaii);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 88px;
+      height: calc(100vh - 120px);
+      max-height: 780px;
+    }
+
+    .stage-viewport {
+      flex: 1;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      background: #ffeef2;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #princess-svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(100, 50, 80, 0.15));
+      animation: gentleBreathe 4s ease-in-out infinite alternate;
+      transform-origin: center bottom;
+    }
+
+    @keyframes gentleBreathe {
+      0% { transform: scale(1) translateY(0); }
+      100% { transform: scale(1.008) translateY(-2px); }
+    }
+
+    /* Floating quick tools over the doll */
+    .stage-tools {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .tool-icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border: 2px solid #ffd0de;
+      box-shadow: 0 4px 12px rgba(255, 117, 151, 0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .tool-icon-btn:hover {
+      transform: scale(1.15) rotate(5deg);
+      border-color: var(--primary-pink);
+      background: #fff;
+    }
+
+    .tool-icon-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Stage bottom controls */
+    .stage-controls {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .stage-controls .btn-kawaii {
+      flex: 1;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    /* Right: Dressing Wardrobe */
+    .wardrobe-card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      box-shadow: var(--shadow-kawaii);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 120px);
+      max-height: 780px;
+    }
+
+    /* Category Navigation Tabs */
+    .tabs-wrapper {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 2px dashed #ffccd9;
+      scrollbar-width: thin;
+      scrollbar-color: #ffb8cd transparent;
+    }
+
+    .tabs-wrapper::-webkit-scrollbar {
+      height: 6px;
+    }
+    .tabs-wrapper::-webkit-scrollbar-thumb {
+      background: #ffb8cd;
+      border-radius: 999px;
+    }
+
+    .tab-btn {
+      white-space: nowrap;
+      background: #fff;
+      border: 2px solid #ffe0ea;
+      padding: 8px 14px;
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-soft);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--primary-pink);
+      color: var(--primary-pink);
+      background: var(--pale-pink);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #ff7597, #ff5480);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 4px 12px rgba(255, 84, 128, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Subcategory / Palette Row */
+    .palette-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: #fff;
+      border-radius: 16px;
+      border: 1.5px solid #ffe4ed;
+      margin-bottom: 14px;
+      overflow-x: auto;
+    }
+
+    .palette-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .color-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      transition: all 0.2s;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .color-dot:hover {
+      transform: scale(1.2);
+    }
+
+    .color-dot.active {
+      transform: scale(1.25);
+      border: 3px solid #ff4d79;
+      box-shadow: 0 0 10px rgba(255, 77, 121, 0.5);
+    }
+
+    /* Items Grid */
+    .items-scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: #ffb8cd transparent;
+    }
+
+    .items-scroll-area::-webkit-scrollbar {
+      width: 6px;
+    }
+    .items-scroll-area::-webkit-scrollbar-thumb {
+      background: #ffb8cd;
+      border-radius: 999px;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+      gap: 14px;
+      padding: 4px;
+    }
+
+    /* Individual Item Card */
+    .item-card {
+      background: white;
+      border: 2px solid #ffe0ea;
+      border-radius: 18px;
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .item-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary-pink);
+      box-shadow: 0 8px 18px rgba(255, 117, 151, 0.2);
+      background: #fffafd;
+    }
+
+    .item-card.active {
+      border: 2.5px solid #ff4d79;
+      background: #fff0f5;
+      box-shadow: 0 6px 18px rgba(255, 77, 121, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .item-card.active::after {
+      content: '💖';
+      position: absolute;
+      top: -8px;
+      right: -6px;
+      font-size: 15px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+      animation: heartPop 0.3s ease-out;
+    }
+
+    @keyframes heartPop {
+      0% { transform: scale(0); }
+      80% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    .item-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      background: #fff4f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      overflow: hidden;
+      border: 1px solid #ffeef4;
+    }
+
+    .item-thumb svg, .item-thumb .emoji-icon {
+      max-width: 90%;
+      max-height: 90%;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+    }
+
+    .emoji-icon {
+      font-size: 44px;
+    }
+
+    .item-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.25;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .item-tag {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    /* Modal for Photo Download & Preview */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(40, 20, 35, 0.6);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 28px;
+      padding: 24px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      transform: scale(0.9) translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ff4d79;
+      margin-bottom: 8px;
+    }
+
+    .photo-preview-wrap {
+      border: 6px solid #fff0f5;
+      border-radius: 18px;
+      overflow: hidden;
+      margin: 16px auto;
+      box-shadow: 0 8px 20px rgba(255, 117, 151, 0.2);
+      max-height: 420px;
+      background: #ffeef4;
+    }
+
+    .photo-preview-wrap img {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    /* Toast Notification */
+    .toast-popup {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #ff7597;
+      color: var(--text-dark);
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 10px 25px rgba(255, 77, 121, 0.3);
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .toast-popup.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- Canvas for sparkle particles -->
+  <canvas id="sparkle-canvas"></canvas>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="brand">
+      <span class="brand-icon">🌸</span>
+      <div>
+        <h1 class="brand-title">Công Chúa Chibi • Nhật Bản</h1>
+        <p class="brand-sub">Game Thay Đồ Công Chúa Dễ Thương & Lộng Lẫy ✨</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-kawaii" id="btn-toggle-sound" title="Bật/Tắt âm thanh & nhạc">
+        <span id="sound-icon">🎵</span> <span id="sound-text">Nhạc: Bật</span>
+      </button>
+      <button class="btn-kawaii btn-accent" id="btn-randomize" title="Phối đồ ngẫu nhiên xinh xắn">
+        <span>🎲</span> Phối Ngẫu Nhiên
+      </button>
+      <button class="btn-kawaii" id="btn-reset" title="Mặc lại trang phục ban đầu">
+        <span>🔄</span> Mặc Lại
+      </button>
+      <button class="btn-kawaii btn-primary" id="btn-save-photo" title="Chụp ảnh và tải về máy">
+        <span>📸</span> Lưu Ảnh
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <div class="game-container">
+    <!-- Left: Character Doll Preview Viewport -->
+    <div class="stage-card">
+      <div class="stage-viewport" id="viewport-stage">
+        <!-- Floating Quick Tools -->
+        <div class="stage-tools">
+          <button class="tool-icon-btn" id="tool-sparkle" title="Thả hoa anh đào & ngôi sao">✨</button>
+          <button class="tool-icon-btn" id="tool-random" title="Gacha trang phục">🎲</button>
+          <button class="tool-icon-btn" id="tool-snap" title="Chụp ảnh">📷</button>
+        </div>
+
+        <!-- THE SCALABLE SVG CHIBI PRINCESS -->
+        <svg id="princess-svg" viewBox="0 0 540 700" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <!-- Skin Gradient: Fair porcelain anime blush -->
+            <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fff8f6"/>
+              <stop offset="70%" stop-color="#fff0ec"/>
+              <stop offset="100%" stop-color="#ffe4dc"/>
+            </linearGradient>
+
+            <linearGradient id="skinShadow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fcdad1"/>
+              <stop offset="100%" stop-color="#f8c3b6"/>
+            </linearGradient>
+
+            <!-- Cheek Blush Gradient -->
+            <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ff7399" stop-opacity="0.6"/>
+              <stop offset="60%" stop-color="#ff9ebb" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#ffb6c1" stop-opacity="0"/>
+            </radialGradient>
+
+            <!-- Eye Sparkle Gradients (Dynamic Eye Colors) -->
+            <linearGradient id="eyeGrad-sapphire" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1a237e"/>
+              <stop offset="55%" stop-color="#2979ff"/>
+              <stop offset="100%" stop-color="#80d8ff"/>
+            </linearGradient>
+
+            <linearGradient id="eyeGrad-ruby" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#880e4f"/>
+              <stop offset="55%" stop-color="#e91e63"/>
+              <stop offset="100%" stop-color="#ff80ab"/>
+            </linearGradient>
+
+            <linearGradient id="eyeGrad-amethyst" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4a148c"/>
+              <stop offset="55%" stop-color="#8e24aa"/>
+              <stop offset="100%" stop-color="#ea80fc"/>
+            </linearGradient>
+
+            <linearGradient id="eyeGrad-emerald" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#004d40"/>
+              <stop offset="55%" stop-color="#00bfa5"/>
+              <stop offset="100%" stop-color="#a7ffeb"/>
+            </linearGradient>
+
+            <linearGradient id="eyeGrad-topaz" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e65100"/>
+              <stop offset="55%" stop-color="#ff9800"/>
+              <stop offset="100%" stop-color="#ffe082"/>
+            </linearGradient>
+
+            <!-- Hair Dynamic Gradients -->
+            <linearGradient id="hairGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" id="hairGrad-stop0" stop-color="#fff0f5"/>
+              <stop offset="40%" id="hairGrad-stop1" stop-color="#ff9ebb"/>
+              <stop offset="100%" id="hairGrad-stop2" stop-color="#ff6b98"/>
+            </linearGradient>
+
+            <!-- Gold Jewelry Gradient -->
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ffe082"/>
+              <stop offset="50%" stop-color="#ffd54f"/>
+              <stop offset="100%" stop-color="#ffb300"/>
+            </linearGradient>
+
+            <!-- Filters for Glows -->
+            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+
+            <filter id="magicGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="8" result="blur"/>
+              <feColorMatrix type="matrix" values="1 0 0 0 1   0 1 0 0 0.8   0 0 1 0 1  0 0 0 2 0"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+          </defs>
+
+          <!-- LAYER 0: SCENIC BACKGROUND -->
+          <g id="layer-bg"></g>
+
+          <!-- LAYER 1: BACK AURAS & WINGS -->
+          <g id="layer-wings"></g>
+          <g id="layer-back-aura"></g>
+
+          <!-- LAYER 2: BACK HAIR -->
+          <g id="layer-back-hair"></g>
+
+          <!-- LAYER 3: BASE DOLL BODY (Chibi, Slender, Fair Skin) -->
+          <g id="layer-doll-body">
+            <!-- Shadow on floor -->
+            <ellipse cx="270" cy="580" rx="65" ry="12" fill="rgba(60, 20, 40, 0.15)"/>
+
+            <!-- Legs (Slender, graceful anime proportions) -->
+            <!-- Left Leg -->
+            <path d="M 248,395 C 246,450 245,510 247,565 C 250,572 262,572 263,565 C 265,510 263,450 264,395 Z" fill="url(#skinGrad)" stroke="#f5c2b5" stroke-width="1.2"/>
+            <!-- Right Leg -->
+            <path d="M 276,395 C 277,450 275,510 277,565 C 278,572 290,572 293,565 C 295,510 294,450 292,395 Z" fill="url(#skinGrad)" stroke="#f5c2b5" stroke-width="1.2"/>
+            <!-- Cute Knee Blushes -->
+            <ellipse cx="255" cy="475" rx="7" ry="5" fill="#ffa8be" opacity="0.45"/>
+            <ellipse cx="285" cy="475" rx="7" ry="5" fill="#ffa8be" opacity="0.45"/>
+
+            <!-- Torso (Slender waist, graceful posture) -->
+            <path d="M 240,290 C 235,325 244,360 247,395 C 254,405 286,405 293,395 C 296,360 305,325 300,290 C 285,286 255,286 240,290 Z" fill="url(#skinGrad)" stroke="#f5c2b5" stroke-width="1.2"/>
+            
+            <!-- Default Chemise / Lingerie (Pastel Frills) -->
+            <g id="base-underwear">
+              <path d="M 241,310 C 248,328 292,328 299,310 L 297,340 C 285,348 255,348 243,340 Z" fill="#fff5f8" stroke="#ffccd9" stroke-width="1.2"/>
+              <!-- Frill lace -->
+              <path d="M 241,310 Q 248,315 255,310 Q 262,315 270,310 Q 278,315 285,310 Q 292,315 299,310" fill="none" stroke="#ff9ebb" stroke-width="1.5"/>
+              <path d="M 245,370 C 255,365 285,365 295,370 L 293,395 C 282,402 258,402 247,395 Z" fill="#fff5f8" stroke="#ffccd9" stroke-width="1.2"/>
+              <circle cx="270" cy="320" r="3" fill="#ff7597"/>
+            </g>
+
+            <!-- Arms & Hands -->
+            <!-- Left Arm: Graceful pose, held slightly out -->
+            <path d="M 234,295 C 218,330 214,370 206,410 C 204,416 215,419 219,413 C 226,375 230,340 242,305 Z" fill="url(#skinGrad)" stroke="#f5c2b5" stroke-width="1.2"/>
+            <!-- Left Hand delicate fingers -->
+            <ellipse cx="209" cy="415" rx="5" ry="7" fill="url(#skinGrad)" transform="rotate(-15 209 415)"/>
+            <path d="M 206,419 Q 203,425 207,427 Q 211,425 210,419" fill="url(#skinGrad)"/>
+
+            <!-- Right Arm: Bent gently inward across waist/chest -->
+            <path d="M 306,295 C 322,330 327,365 320,400 C 316,408 305,406 303,398 C 307,368 304,335 298,305 Z" fill="url(#skinGrad)" stroke="#f5c2b5" stroke-width="1.2"/>
+            <!-- Right Hand delicate fingers -->
+            <ellipse cx="308" cy="403" rx="6" ry="7" fill="url(#skinGrad)" transform="rotate(20 308 403)"/>
+            <path d="M 303,407 Q 300,413 305,415 Q 310,413 308,407" fill="url(#skinGrad)"/>
+
+            <!-- Neck (Slender & graceful) -->
+            <path d="M 262,258 L 262,293 Q 270,296 278,293 L 278,258 Z" fill="url(#skinGrad)" stroke="#f5c2b5" stroke-width="1.2"/>
+            <path d="M 263,260 Q 270,268 277,260" fill="url(#skinShadow)" opacity="0.6"/>
+
+            <!-- Dainty Collarbones -->
+            <path d="M 252,297 Q 262,301 267,298" stroke="#f0b5a6" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M 273,298 Q 278,301 288,297" stroke="#f0b5a6" stroke-width="1.2" stroke-linecap="round"/>
+
+            <!-- Head Shape (Delicate Chibi contour, round chubby cheeks, soft chin) -->
+            <path d="M 212,165 C 210,118 235,92 270,92 C 305,92 330,118 328,165 C 328,222 312,253 270,264 C 228,253 212,222 212,165 Z" fill="url(#skinGrad)" stroke="#f5c2b5" stroke-width="1.2"/>
+
+            <!-- Chibi Ears -->
+            <path d="M 212,165 C 205,168 204,185 212,190 Z" fill="url(#skinGrad)" stroke="#f5c2b5" stroke-width="1.2"/>
+            <path d="M 328,165 C 335,168 336,185 328,190 Z" fill="url(#skinGrad)" stroke="#f5c2b5" stroke-width="1.2"/>
+            <!-- Cute Pearl Stud in Ear -->
+            <circle cx="209" cy="180" r="2.5" fill="#ffffff" stroke="#ffb6c1" stroke-width="0.8"/>
+            <circle cx="331" cy="180" r="2.5" fill="#ffffff" stroke="#ffb6c1" stroke-width="0.8"/>
+          </g>
+
+          <!-- LAYER 4: FACE DETAILS (Eyes, Eyebrows, Blush, Mouth, Stickers) -->
+          <g id="layer-face">
+            <!-- Rosy Cheek Blush -->
+            <ellipse cx="236" cy="198" rx="18" ry="11" fill="url(#blushGrad)"/>
+            <ellipse cx="304" cy="198" rx="18" ry="11" fill="url(#blushGrad)"/>
+            <!-- Cheek Highlight sparkles -->
+            <circle cx="232" cy="195" r="2.5" fill="#ffffff" opacity="0.9"/>
+            <circle cx="240" cy="199" r="1.5" fill="#ffffff" opacity="0.9"/>
+            <circle cx="308" cy="195" r="2.5" fill="#ffffff" opacity="0.9"/>
+            <circle cx="300" cy="199" r="1.5" fill="#ffffff" opacity="0.9"/>
+
+            <!-- Eyebrows (Curved, delicate) -->
+            <g id="face-eyebrows">
+              <path d="M 230,154 Q 242,148 254,154" fill="none" stroke="#b56372" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 286,154 Q 298,148 310,154" fill="none" stroke="#b56372" stroke-width="2" stroke-linecap="round"/>
+            </g>
+
+            <!-- Nose (Dainty tiny anime nose dot) -->
+            <circle cx="270" cy="202" r="1.5" fill="#e8988a"/>
+
+            <!-- EYES CONTAINER -->
+            <g id="face-eyes"></g>
+
+            <!-- MOUTH CONTAINER -->
+            <g id="face-mouth"></g>
+
+            <!-- FACE ACCESSORIES (Cheek stickers / stars) -->
+            <g id="face-stickers"></g>
+          </g>
+
+          <!-- LAYER 5: SOCKS -->
+          <g id="layer-socks"></g>
+
+          <!-- LAYER 6: SHOES -->
+          <g id="layer-shoes"></g>
+
+          <!-- LAYER 7: OUTFIT / DRESS -->
+          <g id="layer-dress"></g>
+
+          <!-- LAYER 8: JEWELRY (Necklace, Choker) -->
+          <g id="layer-jewelry"></g>
+
+          <!-- LAYER 9: FRONT HAIR (Bangs, Sidelocks) -->
+          <g id="layer-front-hair"></g>
+
+          <!-- LAYER 10: HEADWEAR & TIARAS -->
+          <g id="layer-headwear"></g>
+
+          <!-- LAYER 11: HANDHELD PROPS & PETS -->
+          <g id="layer-handheld"></g>
+          <g id="layer-pet"></g>
+
+          <!-- LAYER 12: FOREGROUND PARTICLES / FRAME -->
+          <g id="layer-foreground"></g>
+        </svg>
+      </div>
+
+      <!-- Quick Action Buttons Below Stage -->
+      <div class="stage-controls">
+        <button class="btn-kawaii" id="btn-blink" title="Nhấp nháy mắt dễ thương">
+          <span>😉</span> Chớp Mắt
+        </button>
+        <button class="btn-kawaii btn-accent" id="btn-quick-random" title="Đổi ngẫu nhiên">
+          <span>✨</span> Đổi Đồ
+        </button>
+        <button class="btn-kawaii btn-primary" id="btn-quick-photo" title="Tải ảnh PNG">
+          <span>📷</span> Lưu Ảnh
+        </button>
+      </div>
+    </div>
+
+    <!-- Right: Dressing Wardrobe Interface -->
+    <div class="wardrobe-card">
+      <!-- Category Tabs Navigation -->
+      <div class="tabs-wrapper" id="tabs-container">
+        <button class="tab-btn active" data-tab="dress"><span>👗</span> Váy & Trang Phục</button>
+        <button class="tab-btn" data-tab="hair"><span>🌸</span> Kiểu Tóc</button>
+        <button class="tab-btn" data-tab="eyes"><span>👀</span> Mắt & Biểu Cảm</button>
+        <button class="tab-btn" data-tab="headwear"><span>👑</span> Vương Miện & Mũ</button>
+        <button class="tab-btn" data-tab="shoes"><span>👠</span> Giày & Tất</button>
+        <button class="tab-btn" data-tab="wings"><span>🪽</span> Cánh & Hào Quang</button>
+        <button class="tab-btn" data-tab="handheld"><span>🪄</span> Cầm Tay & Thú Cưng</button>
+        <button class="tab-btn" data-tab="jewelry"><span>💎</span> Dây Chuyền</button>
+        <button class="tab-btn" data-tab="bg"><span>🏞️</span> Hình Nền</button>
+      </div>
+
+      <!-- Color Palette / Variant Selector Bar -->
+      <div class="palette-bar" id="palette-container">
+        <span class="palette-label">Màu Tóc:</span>
+        <div class="color-dot active" data-color="pink" style="background: #ff9ebb;" title="Hồng Sakura"></div>
+        <div class="color-dot" data-color="blonde" style="background: #ffd54f;" title="Vàng Ánh Kim"></div>
+        <div class="color-dot" data-color="lavender" style="background: #c5a3ff;" title="Tím Lavender"></div>
+        <div class="color-dot" data-color="cyan" style="background: #5ce1e6;" title="Xanh Ngọc Bích"></div>
+        <div class="color-dot" data-color="black" style="background: #3a354b;" title="Đen Quý Tộc"></div>
+        <div class="color-dot" data-color="silver" style="background: #e2e8f0;" title="Bạch Kim"></div>
+        <div class="color-dot" data-color="brown" style="background: #8d5b4c;" title="Nâu Trầm"></div>
+        <div class="color-dot" data-color="mint" style="background: #81e6d9;" title="Xanh Bạc Hà"></div>
+      </div>
+
+      <!-- Items Grid Scroll Area -->
+      <div class="items-scroll-area">
+        <div class="items-grid" id="items-grid">
+          <!-- Dynamically populated item cards -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Photo Preview and Download -->
+  <div class="modal-overlay" id="photo-modal">
+    <div class="modal-content">
+      <h3 class="modal-title">✨ Chân Dung Công Chúa ✨</h3>
+      <p style="font-size: 13.5px; color: var(--text-soft);">Bức ảnh tuyệt đẹp của bạn đã sẵn sàng tải về!</p>
+      
+      <div class="photo-preview-wrap">
+        <img id="photo-img-preview" src="" alt="Princess Photo">
+      </div>
+
+      <div class="modal-buttons">
+        <button class="btn-kawaii" id="btn-close-modal">Đóng</button>
+        <a class="btn-kawaii btn-primary" id="btn-download-link" download="cong_chua_chibi.png">
+          <span>💾</span> Tải Về Máy (PNG)
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Message -->
+  <div class="toast-popup" id="toast">
+    <span id="toast-icon">✨</span>
+    <span id="toast-text">Đã thay đổi trang phục!</span>
+  </div>
+
+  <!-- JAVASCRIPT GAME ENGINE -->
+  <script>
+    /* =====================================================================
+       KAWAII AUDIO ENGINE (Pure Web Audio API - 100% Offline, No CDN)
+       ===================================================================== */
+    class KawaiiAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+        this.bgmPlaying = false;
+        this.bgmTimer = null;
+        this.bgmStep = 0;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      // Cute pop click sound
+      playPop(freq = 600) {
+        if (!this.enabled) return;
+        this.init();
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.5, this.ctx.currentTime + 0.08);
+
+          gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.1);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.1);
+        } catch (e) {}
+      }
+
+      // Sparkle chime arpeggio
+      playSparkle() {
+        if (!this.enabled) return;
+        this.init();
+        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // C E G C E
+        notes.forEach((freq, idx) => {
+          setTimeout(() => {
+            try {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'triangle';
+              osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+              gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+              gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+              osc.connect(gain);
+              gain.connect(this.ctx.destination);
+              osc.start();
+              osc.stop(this.ctx.currentTime + 0.25);
+            } catch (e) {}
+          }, idx * 45);
+        });
+      }
+
+      // Magical harp glissando for Randomize
+      playMagic() {
+        if (!this.enabled) return;
+        this.init();
+        const scale = [523.25, 587.33, 659.25, 698.46, 783.99, 880.00, 987.77, 1046.50, 1174.66, 1318.51];
+        scale.forEach((freq, idx) => {
+          setTimeout(() => {
+            try {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+              gain.gain.setValueAtTime(0.14, this.ctx.currentTime);
+              gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+              osc.connect(gain);
+              gain.connect(this.ctx.destination);
+              osc.start();
+              osc.stop(this.ctx.currentTime + 0.3);
+            } catch (e) {}
+          }, idx * 30);
+        });
+      }
+
+      // Camera shutter snap
+      playShutter() {
+        if (!this.enabled) return;
+        this.init();
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(300, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(120, this.ctx.currentTime + 0.05);
+
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.08);
+
+          setTimeout(() => this.playSparkle(), 90);
+        } catch (e) {}
+      }
+
+      // Nostalgic Music Box BGM Generator (Japanese Kawaii Pentatonic Melody)
+      toggleBGM() {
+        this.init();
+        if (this.bgmPlaying) {
+          this.stopBGM();
+          return false;
+        } else {
+          this.startBGM();
+          return true;
+        }
+      }
+
+      startBGM() {
+        this.bgmPlaying = true;
+        this.bgmStep = 0;
+        // Pentatonic kawaii notes in C Major: C5, D5, E5, G5, A5, C6, D6, E6
+        const melody = [
+          523.25, 659.25, 783.99, 1046.50, 783.99, 659.25, 523.25, 0,
+          587.33, 698.46, 880.00, 1174.66, 880.00, 698.46, 587.33, 0,
+          659.25, 783.99, 1046.50, 1318.51, 1046.50, 783.99, 880.00, 0,
+          783.99, 659.25, 587.33, 523.25, 587.33, 659.25, 523.25, 0
+        ];
+
+        const tick = () => {
+          if (!this.bgmPlaying) return;
+          const freq = melody[this.bgmStep % melody.length];
+          this.bgmStep++;
+
+          if (freq > 0) {
+            try {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sine'; // pure music-box bell tone
+              osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+
+              // Gentle bell envelope
+              gain.gain.setValueAtTime(0.045, this.ctx.currentTime);
+              gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.6);
+
+              osc.connect(gain);
+              gain.connect(this.ctx.destination);
+              osc.start();
+              osc.stop(this.ctx.currentTime + 0.6);
+            } catch (e) {}
+          }
+          this.bgmTimer = setTimeout(tick, 280);
+        };
+        tick();
+      }
+
+      stopBGM() {
+        this.bgmPlaying = false;
+        if (this.bgmTimer) {
+          clearTimeout(this.bgmTimer);
+          this.bgmTimer = null;
+        }
+      }
+    }
+
+    const sound = new KawaiiAudioEngine();
+
+    /* =====================================================================
+       SPARKLE & PETAL PARTICLES SYSTEM
+       ===================================================================== */
+    const canvas = document.getElementById('sparkle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Sparkle {
+      constructor(x, y, isSakura = false) {
+        this.x = x;
+        this.y = y;
+        this.isSakura = isSakura;
+        this.size = isSakura ? (Math.random() * 8 + 8) : (Math.random() * 6 + 4);
+        this.speedX = (Math.random() - 0.5) * (isSakura ? 1.5 : 2.5);
+        this.speedY = isSakura ? (Math.random() * 1.5 + 1.2) : (Math.random() * -2 - 0.5);
+        this.opacity = 1;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() - 0.5) * 0.05;
+        this.decay = Math.random() * 0.015 + 0.012;
+        this.color = isSakura ? '#ffb7c5' : ['#ffd166', '#ff7597', '#b5838d', '#d8b4f8', '#ffffff'][Math.floor(Math.random() * 5)];
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.rotation += this.rotSpeed;
+        this.opacity -= this.decay;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.opacity);
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+
+        if (this.isSakura) {
+          // Draw cute cherry blossom petal
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size * 0.6, this.size, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // 4-pointed sparkle star
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          const r = this.size;
+          for (let i = 0; i < 4; i++) {
+            ctx.lineTo(Math.cos(i * Math.PI / 2) * r, Math.sin(i * Math.PI / 2) * r);
+            ctx.lineTo(Math.cos(i * Math.PI / 2 + Math.PI / 4) * (r * 0.35), Math.sin(i * Math.PI / 2 + Math.PI / 4) * (r * 0.35));
+          }
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+
+    function createSparkles(x, y, count = 12, isSakura = false) {
+      for (let i = 0; i < count; i++) {
+        particles.push(new Sparkle(x + (Math.random() - 0.5) * 20, y + (Math.random() - 0.5) * 20, isSakura));
+      }
+    }
+
+    // Sparkle trail on mouse move
+    window.addEventListener('mousemove', (e) => {
+      if (Math.random() < 0.28) {
+        particles.push(new Sparkle(e.clientX, e.clientY, false));
+      }
+    });
+
+    window.addEventListener('click', (e) => {
+      createSparkles(e.clientX, e.clientY, 8, false);
+    });
+
+    // Auto falling petals in background
+    setInterval(() => {
+      if (particles.length < 50) {
+        particles.push(new Sparkle(Math.random() * window.innerWidth, -20, true));
+      }
+    }, 450);
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].opacity <= 0 || particles[i].y > canvas.height + 20) {
+          particles.splice(i, 1);
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    /* =====================================================================
+       GAME ASSETS & DATABASE (SVG Layer Data)
+       ===================================================================== */
+    const HAIR_PALETTES = {
+      pink: { stop0: '#fff0f5', stop1: '#ff9ebb', stop2: '#ff6b98', stroke: '#e8507e' },
+      blonde: { stop0: '#fffde7', stop1: '#ffd54f', stop2: '#ffb300', stroke: '#e69500' },
+      lavender: { stop0: '#f8f0ff', stop1: '#c5a3ff', stop2: '#9362db', stroke: '#7b48c4' },
+      cyan: { stop0: '#e0f7fa', stop1: '#5ce1e6', stop2: '#00a8b5', stroke: '#008b96' },
+      black: { stop0: '#645d7a', stop1: '#3a354b', stop2: '#201b2a', stroke: '#15111c' },
+      silver: { stop0: '#ffffff', stop1: '#e2e8f0', stop2: '#a0aec0', stroke: '#79879c' },
+      brown: { stop0: '#ebd8d3', stop1: '#8d5b4c', stop2: '#5c382e', stroke: '#47271e' },
+      mint: { stop0: '#e6fffa', stop1: '#81e6d9', stop2: '#319795', stroke: '#236b69' }
+    };
+
+    // Current State of the Doll
+    const DOLL_STATE = {
+      hairColor: 'pink',
+      backHair: 'wavy',
+      frontHair: 'hime',
+      eyes: 'sapphire',
+      mouth: 'smile',
+      stickers: 'none',
+      dress: 'royal',
+      shoes: 'glass',
+      socks: 'lace',
+      headwear: 'crown',
+      wings: 'fairy',
+      handheld: 'wand',
+      pet: 'none',
+      jewelry: 'pearl',
+      bg: 'palace'
+    };
+
+    /* ---------------- SVG RENDER DEFINITIONS ---------------- */
+
+    // 1. BACKGROUNDS
+    const BG_DEFS = {
+      palace: `
+        <rect width="540" height="700" fill="url(#bgPalaceGrad)"/>
+        <defs>
+          <linearGradient id="bgPalaceGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffdbe7"/>
+            <stop offset="50%" stop-color="#f8c3d8"/>
+            <stop offset="100%" stop-color="#dfbbda"/>
+          </linearGradient>
+        </defs>
+        <!-- Palace Arch & Pillars -->
+        <path d="M 40,700 L 40,240 Q 40,120 270,120 Q 500,120 500,240 L 500,700" fill="none" stroke="#ffffff" stroke-width="16" opacity="0.6"/>
+        <path d="M 60,700 L 60,250 Q 60,140 270,140 Q 480,140 480,250 L 480,700" fill="none" stroke="#ffe3ee" stroke-width="4" opacity="0.8"/>
+        <!-- Soft Clouds -->
+        <circle cx="100" cy="520" r="70" fill="#ffffff" opacity="0.45"/>
+        <circle cx="170" cy="540" r="80" fill="#ffffff" opacity="0.45"/>
+        <circle cx="370" cy="540" r="80" fill="#ffffff" opacity="0.45"/>
+        <circle cx="440" cy="520" r="70" fill="#ffffff" opacity="0.45"/>
+        <circle cx="270" cy="550" r="90" fill="#ffffff" opacity="0.5"/>
+        <!-- Palace Balustrade -->
+        <rect x="0" y="580" width="540" height="120" fill="#ffffff" opacity="0.7"/>
+        <rect x="0" y="580" width="540" height="16" fill="#ffd1e0"/>
+        <path d="M 50,600 L 50,690 M 110,600 L 110,690 M 170,600 L 170,690 M 230,600 L 230,690 M 310,600 L 310,690 M 370,600 L 370,690 M 430,600 L 430,690 M 490,600 L 490,690" stroke="#ffbccc" stroke-width="6" stroke-linecap="round"/>
+        <!-- Sparkling Chandeliers / Stars -->
+        <circle cx="270" cy="90" r="16" fill="#fff" opacity="0.8" filter="url(#softGlow)"/>
+        <path d="M 270,65 L 270,115 M 245,90 L 295,90" stroke="#ffd700" stroke-width="3"/>
+      `,
+      sakura: `
+        <rect width="540" height="700" fill="#2d1537"/>
+        <!-- Deep Night Gradient with glowing moon -->
+        <radialGradient id="sakuraMoon" cx="70%" cy="25%" r="40%">
+          <stop offset="0%" stop-color="#fff8db"/>
+          <stop offset="40%" stop-color="#ffd56b" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#2d1537" stop-opacity="0"/>
+        </radialGradient>
+        <circle cx="380" cy="180" r="160" fill="url(#sakuraMoon)"/>
+        <circle cx="380" cy="180" r="65" fill="#fffef0" filter="url(#softGlow)"/>
+        <!-- Torii Gate Silhouette -->
+        <g opacity="0.4" fill="#6e2d53">
+          <rect x="60" y="320" width="16" height="300"/>
+          <rect x="200" y="320" width="16" height="300"/>
+          <rect x="40" y="340" width="196" height="18" rx="4"/>
+          <path d="M 30,315 C 90,305 186,305 246,315 L 246,330 C 186,322 90,322 30,330 Z"/>
+        </g>
+        <!-- Cherry blossom branches with glowing flowers -->
+        <path d="M 0,0 C 80,40 140,80 180,150" stroke="#4a223e" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <path d="M 120,65 C 160,50 200,60 220,100" stroke="#4a223e" stroke-width="6" fill="none"/>
+        <circle cx="180" cy="150" r="14" fill="#ff9ebb" opacity="0.9"/>
+        <circle cx="220" cy="100" r="12" fill="#ffb6c1" opacity="0.9"/>
+        <circle cx="130" cy="60" r="11" fill="#ffa8be" opacity="0.9"/>
+        <circle cx="90" cy="40" r="13" fill="#ffccd9" opacity="0.9"/>
+        <!-- Soft grass hill -->
+        <ellipse cx="270" cy="740" rx="360" ry="170" fill="#3c1b48"/>
+      `,
+      starry: `
+        <rect width="540" height="700" fill="url(#starryGrad)"/>
+        <defs>
+          <linearGradient id="starryGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0f0c29"/>
+            <stop offset="50%" stop-color="#302b63"/>
+            <stop offset="100%" stop-color="#24243e"/>
+          </linearGradient>
+        </defs>
+        <!-- Huge Crescent Moon -->
+        <path d="M 340,90 A 100,100 0 1,0 470,220 A 85,85 0 1,1 340,90 Z" fill="#fff7cc" filter="url(#softGlow)"/>
+        <!-- Twinkling Stars -->
+        <g fill="#ffffff">
+          <circle cx="80" cy="90" r="3"/>
+          <circle cx="160" cy="130" r="2"/>
+          <circle cx="240" cy="70" r="3.5" filter="url(#softGlow)"/>
+          <circle cx="110" cy="220" r="2.5"/>
+          <circle cx="480" cy="310" r="3"/>
+          <circle cx="70" cy="380" r="2"/>
+          <circle cx="460" cy="90" r="2"/>
+        </g>
+        <!-- Floating Cosmic Clouds -->
+        <path d="M 0,560 C 140,510 260,570 380,530 C 440,510 500,540 540,560 L 540,700 L 0,700 Z" fill="#4a3e72" opacity="0.6"/>
+        <path d="M 0,600 C 120,570 280,610 400,580 C 480,560 520,590 540,600 L 540,700 L 0,700 Z" fill="#6c5b96" opacity="0.6"/>
+      `,
+      forest: `
+        <rect width="540" height="700" fill="url(#forestGrad)"/>
+        <defs>
+          <linearGradient id="forestGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1e28"/>
+            <stop offset="50%" stop-color="#143d45"/>
+            <stop offset="100%" stop-color="#1d5c58"/>
+          </linearGradient>
+        </defs>
+        <!-- Enchanted Magic Fireflies -->
+        <circle cx="120" cy="180" r="6" fill="#a7ffeb" filter="url(#softGlow)"/>
+        <circle cx="210" cy="240" r="4" fill="#69f0ae" filter="url(#softGlow)"/>
+        <circle cx="390" cy="210" r="5" fill="#a7ffeb" filter="url(#softGlow)"/>
+        <circle cx="440" cy="330" r="7" fill="#ffff8d" filter="url(#softGlow)"/>
+        <circle cx="90" cy="420" r="5" fill="#a7ffeb" filter="url(#softGlow)"/>
+        <!-- Giant Glowing Mushroom on Side -->
+        <g transform="translate(30, 480)">
+          <path d="M 30,120 Q 35,40 50,20 Q 65,40 70,120 Z" fill="#e0f2f1"/>
+          <!-- Cap -->
+          <path d="M 0,35 C 10,-20 90,-20 100,35 Z" fill="#ff5252" filter="url(#softGlow)"/>
+          <circle cx="35" cy="15" r="7" fill="#ffffff"/>
+          <circle cx="65" cy="20" r="6" fill="#ffffff"/>
+        </g>
+        <!-- Enchanted Ground -->
+        <ellipse cx="270" cy="670" rx="340" ry="110" fill="#0f3333"/>
+      `,
+      bedroom: `
+        <rect width="540" height="700" fill="#fdf0f5"/>
+        <!-- Cute Pastel Wallpaper with dots -->
+        <defs>
+          <pattern id="dotPattern" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+            <circle cx="15" cy="15" r="3" fill="#ffd5e2"/>
+          </pattern>
+        </defs>
+        <rect width="540" height="560" fill="url(#dotPattern)"/>
+        <!-- Canopy Drapes -->
+        <path d="M 0,0 L 160,0 C 130,180 80,300 0,360 Z" fill="#ffffff" opacity="0.75"/>
+        <path d="M 540,0 L 380,0 C 410,180 460,300 540,360 Z" fill="#ffffff" opacity="0.75"/>
+        <path d="M 0,360 Q 60,340 100,380" fill="none" stroke="#ff80ab" stroke-width="4"/>
+        <path d="M 540,360 Q 480,340 440,380" fill="none" stroke="#ff80ab" stroke-width="4"/>
+        <!-- Cozy Floor & Rug -->
+        <rect x="0" y="560" width="540" height="140" fill="#ffe0ea"/>
+        <ellipse cx="270" cy="630" rx="220" ry="60" fill="#ffffff"/>
+        <ellipse cx="270" cy="630" rx="200" ry="50" fill="#fff5f8" stroke="#ffccd9" stroke-width="2" stroke-dasharray="8 8"/>
+      `
+    };
+
+    // 2. BACK HAIR STYLES
+    const BACK_HAIR_DEFS = {
+      wavy: `
+        <!-- Voluminous Flowing Wavy Hair -->
+        <path d="M 210,180 C 160,260 140,380 155,500 C 165,530 190,520 185,470 C 175,380 190,300 230,220 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 330,180 C 380,260 400,380 385,500 C 375,530 350,520 355,470 C 365,380 350,300 310,220 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Central flowing hair behind body -->
+        <path d="M 220,180 C 170,300 180,440 210,540 C 230,580 250,550 240,490 C 220,400 225,280 250,220 Z" fill="url(#hairGrad)"/>
+        <path d="M 320,180 C 370,300 360,440 330,540 C 310,580 290,550 300,490 C 320,400 315,280 290,220 Z" fill="url(#hairGrad)"/>
+        <path d="M 230,160 C 200,240 200,380 270,520 C 340,380 340,240 310,160 Z" fill="url(#hairGrad)"/>
+      `,
+      twins: `
+        <!-- High Twin Tails (Bouncy Anime Style) -->
+        <!-- Left Twin Tail -->
+        <path d="M 200,160 C 130,180 100,260 105,380 C 110,470 135,520 145,510 C 155,470 135,420 135,350 C 135,270 160,210 210,180 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Right Twin Tail -->
+        <path d="M 340,160 C 410,180 440,260 435,380 C 430,470 405,520 395,510 C 385,470 405,420 405,350 C 405,270 380,210 330,180 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Twin Ribbon Ties -->
+        <circle cx="195" cy="170" r="12" fill="#ff4d79"/>
+        <circle cx="345" cy="170" r="12" fill="#ff4d79"/>
+      `,
+      royal: `
+        <!-- Elegant Princess Ringlets / Curls -->
+        <path d="M 205,180 C 170,250 160,330 170,410 C 180,450 205,440 195,390 C 185,330 195,270 230,210 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 335,180 C 370,250 380,330 370,410 C 360,450 335,440 345,390 C 355,330 345,270 310,210 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 215,160 C 180,240 190,360 270,450 C 350,360 360,240 325,160 Z" fill="url(#hairGrad)"/>
+      `,
+      straight: `
+        <!-- Ultra-long Silky Hime Straight Hair -->
+        <path d="M 200,160 L 175,560 C 185,570 210,570 215,560 L 235,220 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 340,160 L 365,560 C 355,570 330,570 325,560 L 305,220 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 215,160 L 195,570 L 345,570 L 325,160 Z" fill="url(#hairGrad)"/>
+      `,
+      bob: `
+        <!-- Fluffy Shoulder-Length Chibi Princess Bob -->
+        <path d="M 195,160 C 170,220 170,290 205,340 C 225,360 245,340 235,300 C 215,260 220,200 240,170 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 345,160 C 370,220 370,290 335,340 C 315,360 295,340 305,300 C 325,260 320,200 300,170 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 205,160 C 180,230 190,320 270,350 C 350,320 360,230 335,160 Z" fill="url(#hairGrad)"/>
+      `
+    };
+
+    // 3. FRONT HAIR (BANGS)
+    const FRONT_HAIR_DEFS = {
+      hime: `
+        <!-- Traditional Japanese Hime Bangs (Blunt Bangs + Sidelocks) -->
+        <!-- Blunt Forehead Fringe -->
+        <path d="M 215,145 C 220,110 240,100 270,100 C 300,100 320,110 325,145 C 315,148 295,144 270,146 C 245,144 225,148 215,145 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Center parting notch -->
+        <path d="M 258,145 Q 262,132 265,145" fill="none" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 275,146 Q 278,135 282,146" fill="none" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Left Sidelock (Straight cut at cheek) -->
+        <path d="M 214,145 L 210,230 C 215,236 226,236 226,230 L 225,165 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Right Sidelock -->
+        <path d="M 326,145 L 330,230 C 325,236 314,236 314,230 L 315,165 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Gloss highlight sheen across bangs -->
+        <path d="M 226,126 Q 270,118 314,126" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+      `,
+      wispy: `
+        <!-- Airy Wispy Anime Bangs -->
+        <path d="M 215,140 C 225,105 245,98 270,98 C 295,98 315,105 325,140 C 318,144 308,136 300,146 C 292,136 280,146 270,138 C 260,146 248,136 240,146 C 232,136 222,144 215,140 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Left and Right Soft Wisps framing cheeks -->
+        <path d="M 215,140 C 205,185 210,225 218,245 C 224,240 224,225 220,185 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 325,140 C 335,185 330,225 322,245 C 316,240 316,225 320,185 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 230,120 Q 270,112 310,120" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+      `,
+      curls: `
+        <!-- Side-swept Romantic Bangs with Hair Clip -->
+        <path d="M 215,145 C 220,105 240,98 270,98 C 300,98 322,105 325,145 C 310,140 280,130 250,152 C 230,148 220,146 215,145 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 214,145 C 208,190 205,230 216,250 C 222,245 222,230 220,185 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <path d="M 325,145 C 335,190 338,230 326,250 C 320,245 320,230 322,185 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Cute Star Hairpin -->
+        <path d="M 295,130 L 298,137 L 305,138 L 300,143 L 301,150 L 295,146 L 289,150 L 290,143 L 285,138 L 292,137 Z" fill="#ffd166" stroke="#e69500" stroke-width="1"/>
+      `,
+      braids: `
+        <!-- Front Bangs with Twin Accent Braids -->
+        <path d="M 218,142 C 225,108 245,100 270,100 C 295,100 315,108 322,142 C 310,145 295,140 270,144 C 245,140 230,145 218,142 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <!-- Left delicate braid strand -->
+        <path d="M 214,142 C 205,180 208,220 215,245 L 222,242 C 218,220 215,180 222,145 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <circle cx="217" cy="244" r="5" fill="#ff4d79"/>
+        <!-- Right delicate braid strand -->
+        <path d="M 326,142 C 335,180 332,220 325,245 L 318,242 C 322,220 325,180 318,145 Z" fill="url(#hairGrad)" stroke="var(--hair-stroke)" stroke-width="1.5"/>
+        <circle cx="323" cy="244" r="5" fill="#ff4d79"/>
+      `
+    };
+
+    // 4. EYES STYLES
+    const EYES_DEFS = {
+      sapphire: (grad = 'url(#eyeGrad-sapphire)') => `
+        <!-- Left Eye (Center 244, 182) -->
+        <g id="left-eye">
+          <!-- Sclera -->
+          <ellipse cx="244" cy="182" rx="16" ry="19" fill="#ffffff"/>
+          <!-- Iris -->
+          <ellipse cx="244" cy="183" rx="14" ry="17" fill="${grad}"/>
+          <!-- Pupil -->
+          <ellipse cx="244" cy="182" rx="7" ry="9" fill="#0d1b3e"/>
+          <!-- Star sparkle glint -->
+          <circle cx="244" cy="192" r="3" fill="#ffffff" opacity="0.8"/>
+          <!-- Main Anime Highlights -->
+          <circle cx="239" cy="175" r="5.5" fill="#ffffff"/>
+          <circle cx="249" cy="186" r="3" fill="#ffffff"/>
+          <!-- Thick Eyelashes & Eyelid -->
+          <path d="M 226,176 C 230,163 252,163 262,176" fill="none" stroke="#2d162a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 258,172 L 264,168" stroke="#2d162a" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 234,196 C 240,199 250,198 256,194" fill="none" stroke="#2d162a" stroke-width="2" stroke-linecap="round"/>
+          <!-- Double eyelid crease -->
+          <path d="M 232,166 Q 244,162 256,166" fill="none" stroke="#e090a2" stroke-width="1.2"/>
+        </g>
+        <!-- Right Eye (Center 296, 182) -->
+        <g id="right-eye">
+          <ellipse cx="296" cy="182" rx="16" ry="19" fill="#ffffff"/>
+          <ellipse cx="296" cy="183" rx="14" ry="17" fill="${grad}"/>
+          <ellipse cx="296" cy="182" rx="7" ry="9" fill="#0d1b3e"/>
+          <circle cx="296" cy="192" r="3" fill="#ffffff" opacity="0.8"/>
+          <circle cx="291" cy="175" r="5.5" fill="#ffffff"/>
+          <circle cx="301" cy="186" r="3" fill="#ffffff"/>
+          <path d="M 278,176 C 288,163 310,163 314,176" fill="none" stroke="#2d162a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 310,172 L 316,168" stroke="#2d162a" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 284,194 C 290,198 300,199 306,196" fill="none" stroke="#2d162a" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 284,166 Q 296,162 308,166" fill="none" stroke="#e090a2" stroke-width="1.2"/>
+        </g>
+      `,
+      ruby: () => EYES_DEFS.sapphire('url(#eyeGrad-ruby)'),
+      amethyst: () => EYES_DEFS.sapphire('url(#eyeGrad-amethyst)'),
+      emerald: () => EYES_DEFS.sapphire('url(#eyeGrad-emerald)'),
+      topaz: () => EYES_DEFS.sapphire('url(#eyeGrad-topaz)'),
+      wink: () => `
+        <!-- Left Eye: Normal Sapphire -->
+        <g id="left-eye">
+          <ellipse cx="244" cy="182" rx="16" ry="19" fill="#ffffff"/>
+          <ellipse cx="244" cy="183" rx="14" ry="17" fill="url(#eyeGrad-ruby)"/>
+          <ellipse cx="244" cy="182" rx="7" ry="9" fill="#3e0d22"/>
+          <circle cx="239" cy="175" r="5.5" fill="#ffffff"/>
+          <circle cx="249" cy="186" r="3" fill="#ffffff"/>
+          <path d="M 226,176 C 230,163 252,163 262,176" fill="none" stroke="#2d162a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M 258,172 L 264,168" stroke="#2d162a" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 234,196 C 240,199 250,198 256,194" fill="none" stroke="#2d162a" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <!-- Right Eye: Playful Winking Arch (^_~) -->
+        <g id="right-eye-wink">
+          <path d="M 280,184 Q 296,170 312,184" fill="none" stroke="#2d162a" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M 310,180 L 316,174" stroke="#2d162a" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 306,184 L 314,188" stroke="#2d162a" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="296" cy="172" r="3" fill="#ff7597" opacity="0.6"/>
+        </g>
+      `,
+      hearts: () => `
+        <!-- Heart In Love Eyes -->
+        <g id="left-eye">
+          <ellipse cx="244" cy="182" rx="16" ry="19" fill="#ffffff"/>
+          <ellipse cx="244" cy="183" rx="14" ry="17" fill="url(#eyeGrad-ruby)"/>
+          <!-- Glowing Heart as Pupil -->
+          <path d="M 244,188 C 244,188 236,180 236,176 A 4,4 0 0,1 244,174 A 4,4 0 0,1 252,176 C 252,180 244,188 244,188 Z" fill="#ffffff" filter="url(#softGlow)"/>
+          <path d="M 226,176 C 230,163 252,163 262,176" fill="none" stroke="#2d162a" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <g id="right-eye">
+          <ellipse cx="296" cy="182" rx="16" ry="19" fill="#ffffff"/>
+          <ellipse cx="296" cy="183" rx="14" ry="17" fill="url(#eyeGrad-ruby)"/>
+          <path d="M 296,188 C 296,188 288,180 288,176 A 4,4 0 0,1 296,174 A 4,4 0 0,1 304,176 C 304,180 296,188 296,188 Z" fill="#ffffff" filter="url(#softGlow)"/>
+          <path d="M 278,176 C 288,163 310,163 314,176" fill="none" stroke="#2d162a" stroke-width="4" stroke-linecap="round"/>
+        </g>
+      `
+    };
+
+    // 5. MOUTH STYLES
+    const MOUTH_DEFS = {
+      smile: `
+        <!-- Sweet Small Smile with Lip Gloss -->
+        <path d="M 264,226 Q 270,233 276,226" fill="none" stroke="#d65773" stroke-width="2.5" stroke-linecap="round"/>
+        <ellipse cx="270" cy="229" rx="3" ry="1" fill="#ffffff" opacity="0.8"/>
+      `,
+      open: `
+        <!-- Cheerful Open Smile with Cute Tongue -->
+        <path d="M 263,224 Q 270,238 277,224 Z" fill="#e91e63" stroke="#b01248" stroke-width="1.5"/>
+        <path d="M 265,229 Q 270,233 275,229" fill="#ff80ab"/>
+      `,
+      cat: `
+        <!-- Cute Anime Cat Mouth (:3) -->
+        <path d="M 263,226 Q 266,232 270,228 Q 274,232 277,226" fill="none" stroke="#d65773" stroke-width="2.5" stroke-linecap="round"/>
+      `,
+      pout: `
+        <!-- Shy Pout Mouth -->
+        <path d="M 265,228 Q 270,225 275,228" fill="none" stroke="#d65773" stroke-width="2.5" stroke-linecap="round"/>
+      `
+    };
+
+    // 6. DRESSES & OUTFITS (Extremely detailed, stunning vector art!)
+    const DRESS_DEFS = {
+      royal: `
+        <!-- 1. ROYAL ROCOCO PRINCESS GOWN -->
+        <g id="dress-royal">
+          <!-- Voluminous Tiered Ballgown Skirt -->
+          <path d="M 246,365 C 230,410 160,490 145,565 C 170,580 370,580 395,565 C 380,490 310,410 294,365 Z" fill="#fff0f5" stroke="#ff9ebb" stroke-width="1.8"/>
+          <!-- Ruffled Tier 1 -->
+          <path d="M 170,490 Q 270,520 370,490 L 385,535 Q 270,565 155,535 Z" fill="#ffe4ee" stroke="#ff85a2" stroke-width="1.2"/>
+          <!-- Ruffled Tier 2 (Bottom Frills) -->
+          <path d="M 145,550 Q 180,565 210,555 Q 240,565 270,555 Q 300,565 330,555 Q 360,565 395,550 L 395,565 Q 270,585 145,565 Z" fill="#ffffff" stroke="#ff7597" stroke-width="1.2"/>
+          <!-- Golden Filigree on Dress -->
+          <path d="M 210,420 Q 270,450 330,420" fill="none" stroke="url(#goldGrad)" stroke-width="3"/>
+          <path d="M 190,470 Q 270,500 350,470" fill="none" stroke="url(#goldGrad)" stroke-width="3"/>
+          <!-- Rose Corset Bodice -->
+          <path d="M 242,295 C 235,325 244,355 247,370 C 255,375 285,375 293,370 C 296,355 305,325 298,295 Z" fill="#ff5c84" stroke="#d6335c" stroke-width="1.5"/>
+          <!-- Golden Corset Lacing -->
+          <path d="M 258,310 L 282,325 M 282,310 L 258,325 M 260,330 L 280,345 M 280,330 L 260,345" stroke="url(#goldGrad)" stroke-width="2"/>
+          <!-- Puffy Princess Shoulders with Lace -->
+          <circle cx="230" cy="300" r="16" fill="#ffe4ee" stroke="#ff85a2" stroke-width="1.5"/>
+          <circle cx="310" cy="300" r="16" fill="#ffe4ee" stroke="#ff85a2" stroke-width="1.5"/>
+          <!-- Royal Center Bow with Ruby -->
+          <path d="M 270,302 L 258,296 L 258,308 Z M 270,302 L 282,296 L 282,308 Z" fill="#ffffff" stroke="#ff3366" stroke-width="1.5"/>
+          <circle cx="270" cy="302" r="4.5" fill="#e91e63" stroke="url(#goldGrad)" stroke-width="1.5"/>
+        </g>
+      `,
+      sakura: `
+        <!-- 2. JAPANESE SAKURA FURISODE KIMONO -->
+        <g id="dress-sakura">
+          <!-- Flowing Kimono Skirt -->
+          <path d="M 242,370 L 220,565 C 250,572 290,572 320,565 L 298,370 Z" fill="#ff7597" stroke="#e0436d" stroke-width="1.5"/>
+          <!-- Kimono Overlay wrap -->
+          <path d="M 240,370 L 285,568 L 320,565 L 298,370 Z" fill="#ff8da9" stroke="#e0436d" stroke-width="1.2"/>
+          <!-- White Sakura Flowers on Kimono -->
+          <g fill="#ffffff" opacity="0.85">
+            <circle cx="245" cy="460" r="6"/><circle cx="255" cy="460" r="6"/><circle cx="250" cy="452" r="6"/><circle cx="248" cy="466" r="6"/><circle cx="250" cy="460" r="3" fill="#ffd166"/>
+            <circle cx="285" cy="520" r="5"/><circle cx="295" cy="520" r="5"/><circle cx="290" cy="514" r="5"/><circle cx="288" cy="525" r="5"/><circle cx="290" cy="520" r="2.5" fill="#ffd166"/>
+          </g>
+          <!-- Flowing Long Kimono Sleeves (Furisode) -->
+          <path d="M 226,305 L 180,480 C 195,495 215,480 215,440 L 235,335 Z" fill="#ff7597" stroke="#e0436d" stroke-width="1.5"/>
+          <path d="M 314,305 L 360,480 C 345,495 325,480 325,440 L 305,335 Z" fill="#ff7597" stroke="#e0436d" stroke-width="1.5"/>
+          <!-- Cross Collar (White Under-collar + Kimono Collar) -->
+          <path d="M 252,285 L 270,315 L 288,285" fill="none" stroke="#ffffff" stroke-width="6"/>
+          <path d="M 248,288 L 270,320 L 292,288" fill="none" stroke="#e0436d" stroke-width="5"/>
+          <!-- Golden Obi Sash (Wide Japanese Belt) -->
+          <rect x="238" y="325" width="64" height="42" fill="url(#goldGrad)" rx="3" stroke="#b8860b" stroke-width="1.5"/>
+          <!-- Red Obi-jime Cord with Bell -->
+          <line x1="238" y1="346" x2="302" y2="346" stroke="#c2185b" stroke-width="2.5"/>
+          <circle cx="270" cy="346" r="5" fill="#ffd700" stroke="#b8860b" stroke-width="1"/>
+          <!-- Obi Ribbon Wings behind waist -->
+          <path d="M 238,335 C 220,330 215,360 235,365 Z" fill="#ff4d79"/>
+          <path d="M 302,335 C 320,330 325,360 305,365 Z" fill="#ff4d79"/>
+        </g>
+      `,
+      star: `
+        <!-- 3. CELESTIAL STARRY MAGICAL GIRL DRESS -->
+        <g id="dress-star">
+          <!-- Midnight Blue & Violet Starry Skirt -->
+          <defs>
+            <linearGradient id="cosmicSkirt" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4a148c"/>
+              <stop offset="60%" stop-color="#311b92"/>
+              <stop offset="100%" stop-color="#1a237e"/>
+            </linearGradient>
+          </defs>
+          <path d="M 246,365 C 220,410 170,480 150,560 C 180,575 360,575 390,560 C 370,480 320,410 294,365 Z" fill="url(#cosmicSkirt)" stroke="#7c4dff" stroke-width="1.5"/>
+          <!-- Translucent Starry Chiffon Frill Overlayer -->
+          <path d="M 150,560 Q 270,530 390,560 L 390,568 Q 270,545 150,568 Z" fill="#ea80fc" opacity="0.8"/>
+          <!-- Stars on hem -->
+          <g fill="#ffff8d" filter="url(#softGlow)">
+            <circle cx="200" cy="520" r="3"/><circle cx="270" cy="510" r="4"/><circle cx="340" cy="525" r="3.5"/><circle cx="230" cy="470" r="2.5"/><circle cx="310" cy="460" r="3"/>
+          </g>
+          <!-- Cosmic Bodice -->
+          <path d="M 242,295 C 235,325 244,355 247,370 C 255,375 285,375 293,370 C 296,355 305,325 298,295 Z" fill="#512da8" stroke="#7c4dff" stroke-width="1.5"/>
+          <!-- Crescent Moon & Star Brooch -->
+          <path d="M 270,305 A 7,7 0 1,0 277,314 A 6,6 0 1,1 270,305 Z" fill="url(#goldGrad)" filter="url(#softGlow)"/>
+          <!-- Translucent Sailor Collar with Gold Trims -->
+          <path d="M 235,296 L 270,328 L 305,296" fill="none" stroke="#ea80fc" stroke-width="5"/>
+          <path d="M 235,296 L 270,328 L 305,296" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+          <!-- Cosmic Side Ribbon Tails -->
+          <path d="M 244,365 C 220,380 205,440 215,480 C 220,440 235,390 248,370 Z" fill="#b388ff" opacity="0.85"/>
+          <path d="M 296,365 C 320,380 335,440 325,480 C 320,440 305,390 292,370 Z" fill="#b388ff" opacity="0.85"/>
+        </g>
+      `,
+      fairy: `
+        <!-- 4. ENCHANTED FAIRY BLOSSOM DRESS -->
+        <g id="dress-fairy">
+          <!-- Multi-petal Flower Rose Dress Skirt -->
+          <path d="M 245,365 C 220,420 180,470 170,550 C 210,540 240,500 248,460 Z" fill="#ff80ab" stroke="#f50057" stroke-width="1.2"/>
+          <path d="M 295,365 C 320,420 360,470 370,550 C 330,540 300,500 292,460 Z" fill="#ff80ab" stroke="#f50057" stroke-width="1.2"/>
+          <path d="M 246,365 C 230,420 220,500 270,565 C 320,500 310,420 294,365 Z" fill="#ffb2dd" stroke="#f50057" stroke-width="1.2"/>
+          <!-- Mint vine belt -->
+          <path d="M 242,365 Q 270,375 298,365" fill="none" stroke="#00bfa5" stroke-width="4"/>
+          <!-- Rose Corset -->
+          <path d="M 242,295 C 235,325 244,355 247,370 C 255,375 285,375 293,370 C 296,355 305,325 298,295 Z" fill="#ff4081" stroke="#c51162" stroke-width="1.5"/>
+          <!-- Petal Neckline Frills -->
+          <path d="M 240,298 Q 255,310 270,298 Q 285,310 300,298" fill="#ffffff" stroke="#ff80ab" stroke-width="2"/>
+        </g>
+      `,
+      mermaid: `
+        <!-- 5. OCEAN PEARL MERMAID SIREN GOWN -->
+        <g id="dress-mermaid">
+          <defs>
+            <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00e5ff"/>
+              <stop offset="50%" stop-color="#00b0ff"/>
+              <stop offset="100%" stop-color="#0091ea"/>
+            </linearGradient>
+          </defs>
+          <!-- Form-fitting Mermaid silhouette with flared fin tail -->
+          <path d="M 244,365 C 238,420 250,470 248,510 C 230,535 180,560 170,575 C 220,570 260,550 270,530 C 280,550 320,570 370,575 C 360,560 310,535 292,510 C 290,470 302,420 296,365 Z" fill="url(#oceanGrad)" stroke="#00b0ff" stroke-width="1.5"/>
+          <!-- Scallop shell patterns on tail -->
+          <path d="M 246,400 Q 270,415 294,400 M 248,435 Q 270,450 292,435 M 250,470 Q 270,485 290,470" fill="none" stroke="#e0f7fa" stroke-width="2"/>
+          <!-- Seafoam layered ruffles -->
+          <path d="M 170,575 Q 270,555 370,575 L 365,580 Q 270,560 175,580 Z" fill="#ffffff" opacity="0.9"/>
+          <!-- Shell Bodice -->
+          <path d="M 242,295 C 235,325 244,355 247,370 C 255,375 285,375 293,370 C 296,355 305,325 298,295 Z" fill="#18ffff" stroke="#00b0ff" stroke-width="1.5"/>
+          <!-- Pearl Waist Choker -->
+          <circle cx="255" cy="368" r="3" fill="#ffffff"/><circle cx="265" cy="370" r="3.5" fill="#ffffff"/><circle cx="275" cy="370" r="3.5" fill="#ffffff"/><circle cx="285" cy="368" r="3" fill="#ffffff"/>
+        </g>
+      `,
+      lolita: `
+        <!-- 6. SWEET LOLITA BUNNY IDOL DRESS -->
+        <g id="dress-lolita">
+          <!-- Fluffy Cupcake Ruffled Bell Skirt -->
+          <path d="M 246,365 C 220,400 170,450 160,520 C 190,535 350,535 380,520 C 370,450 320,400 294,365 Z" fill="#ffffff" stroke="#ff80ab" stroke-width="1.5"/>
+          <path d="M 160,520 Q 270,545 380,520 L 380,535 Q 270,560 160,535 Z" fill="#ff4081"/>
+          <!-- Strawberry Pink Suspender Straps & Bodice -->
+          <path d="M 242,295 C 235,325 244,355 247,370 C 255,375 285,375 293,370 C 296,355 305,325 298,295 Z" fill="#ffffff" stroke="#ff80ab" stroke-width="1.5"/>
+          <!-- Pink Suspenders -->
+          <rect x="250" y="295" width="6" height="75" fill="#ff4081"/>
+          <rect x="284" y="295" width="6" height="75" fill="#ff4081"/>
+          <!-- Giant Chest Ribbon Bow with Heart -->
+          <path d="M 270,312 L 252,302 L 252,322 Z M 270,312 L 288,302 L 288,322 Z" fill="#ff1744" stroke="#d50000" stroke-width="1.2"/>
+          <path d="M 270,312 C 270,312 264,306 264,302 A 3,3 0 0,1 270,300 A 3,3 0 0,1 276,302 C 276,306 270,312 270,312 Z" fill="#ffd166"/>
+        </g>
+      `,
+      frost: `
+        <!-- 7. FROST CRYSTAL ICE QUEEN GOWN -->
+        <g id="dress-frost">
+          <defs>
+            <linearGradient id="iceGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e0f7fa"/>
+              <stop offset="60%" stop-color="#80deea"/>
+              <stop offset="100%" stop-color="#26c6da"/>
+            </linearGradient>
+          </defs>
+          <path d="M 246,365 C 220,410 165,480 145,565 C 180,580 360,580 395,565 C 375,480 320,410 294,365 Z" fill="url(#iceGrad)" stroke="#00acc1" stroke-width="1.5"/>
+          <!-- Translucent Ice Split Overskirt -->
+          <path d="M 246,365 L 180,560 L 250,560 Z" fill="#ffffff" opacity="0.6"/>
+          <path d="M 294,365 L 360,560 L 290,560 Z" fill="#ffffff" opacity="0.6"/>
+          <!-- Snowflake Bodice -->
+          <path d="M 242,295 C 235,325 244,355 247,370 C 255,375 285,375 293,370 C 296,355 305,325 298,295 Z" fill="#b2ebf2" stroke="#00acc1" stroke-width="1.5"/>
+          <!-- Crystalline Snowflake on Chest -->
+          <g transform="translate(270, 310)" stroke="#ffffff" stroke-width="2">
+            <line x1="-8" y1="0" x2="8" y2="0"/>
+            <line x1="0" y1="-8" x2="0" y2="8"/>
+            <line x1="-5" y1="-5" x2="5" y2="5"/>
+            <line x1="-5" y1="5" x2="5" y2="-5"/>
+            <circle cx="0" cy="0" r="3" fill="#ffffff"/>
+          </g>
+        </g>
+      `,
+      academy: `
+        <!-- 8. NOBLE SAILOR ACADEMY UNIFORM -->
+        <g id="dress-academy">
+          <!-- Pleated Navy Mini-Skirt -->
+          <path d="M 246,365 L 225,445 C 255,455 285,455 315,445 L 294,365 Z" fill="#1a237e" stroke="#0d1b3e" stroke-width="1.5"/>
+          <!-- Skirt pleat lines & Gold Hem Band -->
+          <path d="M 240,370 L 235,448 M 255,370 L 255,452 M 270,370 L 270,453 M 285,370 L 285,452 M 300,370 L 305,448" stroke="#3949ab" stroke-width="1.5"/>
+          <path d="M 226,438 Q 270,450 314,438" fill="none" stroke="#ffd700" stroke-width="2"/>
+          <!-- Crisp White Sailor Top with Navy Collar -->
+          <path d="M 242,295 C 235,325 244,355 247,370 C 255,375 285,375 293,370 C 296,355 305,325 298,295 Z" fill="#ffffff" stroke="#c5cae9" stroke-width="1.5"/>
+          <!-- Navy Sailor Flap Collar -->
+          <path d="M 235,296 L 270,335 L 305,296 L 295,295 L 270,320 L 245,295 Z" fill="#1a237e" stroke="#0d1b3e" stroke-width="1.2"/>
+          <path d="M 238,296 L 270,332 L 302,296" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+          <!-- Scarlet Red Silk Tie -->
+          <path d="M 270,320 L 265,348 L 270,355 L 275,348 Z" fill="#d50000"/>
+        </g>
+      `
+    };
+
+    // 7. SOCKS & STOCKINGS
+    const SOCKS_DEFS = {
+      none: '',
+      lace: `
+        <!-- Frilly White Lace Ankle Socks -->
+        <g id="socks-lace">
+          <path d="M 246,540 L 264,540 L 264,565 L 246,565 Z" fill="#ffffff" stroke="#ffb6c1" stroke-width="1"/>
+          <path d="M 276,540 L 294,540 L 294,565 L 276,565 Z" fill="#ffffff" stroke="#ffb6c1" stroke-width="1"/>
+          <!-- Lace frill tops -->
+          <path d="M 244,540 Q 255,535 266,540 M 274,540 Q 285,535 296,540" fill="none" stroke="#ff80ab" stroke-width="2.5"/>
+        </g>
+      `,
+      ribbon: `
+        <!-- Thigh-High Stockings with Pink Silk Ribbons -->
+        <g id="socks-ribbon">
+          <path d="M 246,450 C 245,490 246,530 246,565 L 264,565 C 264,530 265,490 264,450 Z" fill="#ffffff" opacity="0.95" stroke="#ff80ab" stroke-width="1"/>
+          <path d="M 276,450 C 275,490 276,530 276,565 L 294,565 C 294,530 295,490 294,450 Z" fill="#ffffff" opacity="0.95" stroke="#ff80ab" stroke-width="1"/>
+          <!-- Ribbon Bows at thighs -->
+          <circle cx="255" cy="452" r="3.5" fill="#ff4081"/>
+          <circle cx="285" cy="452" r="3.5" fill="#ff4081"/>
+        </g>
+      `,
+      sheer: `
+        <!-- Sheer Black Starry Pantyhose -->
+        <g id="socks-sheer">
+          <path d="M 246,420 L 246,565 L 264,565 L 264,420 Z" fill="#212121" opacity="0.55"/>
+          <path d="M 276,420 L 276,565 L 294,565 L 294,420 Z" fill="#212121" opacity="0.55"/>
+        </g>
+      `
+    };
+
+    // 8. SHOES
+    const SHOES_DEFS = {
+      glass: `
+        <!-- Shimmering Crystal Glass Slippers -->
+        <g id="shoes-glass" filter="url(#softGlow)">
+          <path d="M 244,560 C 242,575 252,580 264,575 C 266,568 266,560 264,560 Z" fill="#e1f5fe" stroke="#81d4fa" stroke-width="1.5"/>
+          <path d="M 276,560 C 274,575 284,580 296,575 C 298,568 298,560 296,560 Z" fill="#e1f5fe" stroke="#81d4fa" stroke-width="1.5"/>
+          <!-- Sparkle Gem -->
+          <circle cx="250" cy="570" r="2.5" fill="#ffffff"/>
+          <circle cx="288" cy="570" r="2.5" fill="#ffffff"/>
+        </g>
+      `,
+      maryjane: `
+        <!-- Sweet Pink Mary Jane Shoes with Ribbon Bows -->
+        <g id="shoes-maryjane">
+          <path d="M 244,562 C 242,576 252,580 264,576 C 266,568 266,562 264,562 Z" fill="#ff4081" stroke="#c51162" stroke-width="1.5"/>
+          <path d="M 276,562 C 274,576 284,580 296,576 C 298,568 298,562 296,562 Z" fill="#ff4081" stroke="#c51162" stroke-width="1.5"/>
+          <rect x="245" y="563" width="18" height="3" fill="#ffffff"/>
+          <rect x="277" y="563" width="18" height="3" fill="#ffffff"/>
+        </g>
+      `,
+      boots: `
+        <!-- Royal Lace-up Princess Boots -->
+        <g id="shoes-boots">
+          <path d="M 244,530 L 244,578 C 254,582 264,578 264,575 L 264,530 Z" fill="#ffffff" stroke="#ff80ab" stroke-width="1.5"/>
+          <path d="M 276,530 L 276,578 C 286,582 296,578 296,575 L 296,530 Z" fill="#ffffff" stroke="#ff80ab" stroke-width="1.5"/>
+          <!-- Gold buckles -->
+          <line x1="244" y1="545" x2="264" y2="545" stroke="url(#goldGrad)" stroke-width="2"/>
+          <line x1="276" y1="545" x2="296" y2="545" stroke="url(#goldGrad)" stroke-width="2"/>
+        </g>
+      `,
+      geta: `
+        <!-- Traditional Japanese Lacquered Red Geta -->
+        <g id="shoes-geta">
+          <rect x="242" y="566" width="22" height="8" rx="2" fill="#d50000"/>
+          <rect x="276" y="566" width="22" height="8" rx="2" fill="#d50000"/>
+          <line x1="246" y1="574" x2="246" y2="580" stroke="#212121" stroke-width="2"/>
+          <line x1="260" y1="574" x2="260" y2="580" stroke="#212121" stroke-width="2"/>
+          <line x1="280" y1="574" x2="280" y2="580" stroke="#212121" stroke-width="2"/>
+          <line x1="294" y1="574" x2="294" y2="580" stroke="#212121" stroke-width="2"/>
+        </g>
+      `
+    };
+
+    // 9. HEADWEAR & TIARAS
+    const HEADWEAR_DEFS = {
+      none: '',
+      crown: `
+        <!-- Luxurious Royal Golden Diamond Crown -->
+        <g id="head-crown" transform="translate(270, 92)">
+          <path d="M -30,-5 L -34,-32 L -15,-18 L 0,-38 L 15,-18 L 34,-32 L 30,-5 Z" fill="url(#goldGrad)" stroke="#b8860b" stroke-width="1.8"/>
+          <!-- Crown base ring -->
+          <rect x="-30" y="-7" width="60" height="9" rx="3" fill="url(#goldGrad)" stroke="#b8860b" stroke-width="1.5"/>
+          <!-- Sparkling Rubies and Pearls -->
+          <circle cx="0" cy="-38" r="4" fill="#e91e63" stroke="#ffffff" stroke-width="1" filter="url(#softGlow)"/>
+          <circle cx="-34" cy="-32" r="3.5" fill="#00e5ff" stroke="#ffffff" stroke-width="1"/>
+          <circle cx="34" cy="-32" r="3.5" fill="#00e5ff" stroke="#ffffff" stroke-width="1"/>
+          <circle cx="0" cy="-3" r="3" fill="#e91e63"/>
+          <circle cx="-18" cy="-3" r="2.5" fill="#ffffff"/>
+          <circle cx="18" cy="-3" r="2.5" fill="#ffffff"/>
+        </g>
+      `,
+      bow: `
+        <!-- Giant Satin Ribbon Bow (Lolita Princess) -->
+        <g id="head-bow" transform="translate(270, 96)">
+          <path d="M 0,0 C -25,-30 -60,-25 -65,0 C -60,25 -25,10 0,0 Z" fill="#ff4081" stroke="#c2185b" stroke-width="1.8"/>
+          <path d="M 0,0 C 25,-30 60,-25 65,0 C 60,25 25,10 0,0 Z" fill="#ff4081" stroke="#c2185b" stroke-width="1.8"/>
+          <!-- Ribbon knot & Heart Gem -->
+          <ellipse cx="0" cy="0" rx="9" ry="8" fill="#ff1744" stroke="#c2185b" stroke-width="1.5"/>
+          <circle cx="0" cy="0" r="4.5" fill="#ffd166"/>
+        </g>
+      `,
+      catears: `
+        <!-- Noble Lace Cat Ears Headband with Little Bells -->
+        <g id="head-catears" transform="translate(270, 96)">
+          <!-- Headband band -->
+          <path d="M -50,15 Q 0,-15 50,15" fill="none" stroke="#212121" stroke-width="3"/>
+          <!-- Left Ear -->
+          <path d="M -45,10 L -48,-28 L -22,-6 Z" fill="#ffffff" stroke="#ff80ab" stroke-width="2"/>
+          <path d="M -42,6 L -44,-20 L -27,-4 Z" fill="#ff80ab"/>
+          <!-- Right Ear -->
+          <path d="M 45,10 L 48,-28 L 22,-6 Z" fill="#ffffff" stroke="#ff80ab" stroke-width="2"/>
+          <path d="M 42,6 L 44,-20 L 27,-4 Z" fill="#ff80ab"/>
+          <!-- Golden Bells -->
+          <circle cx="-25" cy="-2" r="3.5" fill="#ffd700"/>
+          <circle cx="25" cy="-2" r="3.5" fill="#ffd700"/>
+        </g>
+      `,
+      sakurapin: `
+        <!-- Traditional Japanese Kanzashi Sakura Hairpin with Tassels -->
+        <g id="head-sakura" transform="translate(325, 125)">
+          <circle cx="0" cy="0" r="14" fill="#ff7597" stroke="#e91e63" stroke-width="1.5"/>
+          <circle cx="0" cy="0" r="5" fill="#ffd54f"/>
+          <!-- Hanging bells & floral petals -->
+          <line x1="-4" y1="12" x2="-6" y2="45" stroke="#ff80ab" stroke-width="1.8"/>
+          <circle cx="-6" cy="45" r="4" fill="#ffd700"/>
+          <line x1="4" y1="12" x2="6" y2="55" stroke="#ff80ab" stroke-width="1.8"/>
+          <circle cx="6" cy="55" r="4" fill="#ffd700"/>
+        </g>
+      `,
+      wreath: `
+        <!-- Enchanted Fairy Floral Wreath -->
+        <g id="head-wreath" transform="translate(270, 105)">
+          <path d="M -55,10 Q 0,-15 55,10" fill="none" stroke="#4caf50" stroke-width="4"/>
+          <!-- Pastel Flowers -->
+          <circle cx="-35" cy="-2" r="7" fill="#ff80ab"/>
+          <circle cx="-15" cy="-8" r="8" fill="#ffffff"/>
+          <circle cx="10" cy="-9" r="8.5" fill="#ff4081"/>
+          <circle cx="35" cy="-3" r="7" fill="#ea80fc"/>
+        </g>
+      `
+    };
+
+    // 10. WINGS & BACK AURAS
+    const WINGS_DEFS = {
+      none: '',
+      fairy: `
+        <!-- Sparkling Butterfly Fairy Wings -->
+        <g id="wings-fairy" opacity="0.88" filter="url(#softGlow)">
+          <!-- Top Left Wing -->
+          <path d="M 230,280 C 130,160 80,180 75,270 C 70,340 140,360 230,320 Z" fill="#f8bbd0" stroke="#f06292" stroke-width="2"/>
+          <circle cx="120" cy="245" r="10" fill="#ffffff" opacity="0.7"/>
+          <!-- Bottom Left Wing -->
+          <path d="M 230,320 C 140,360 110,420 130,460 C 150,490 200,450 235,360 Z" fill="#e1bee7" stroke="#ba68c8" stroke-width="2"/>
+          <!-- Top Right Wing -->
+          <path d="M 310,280 C 410,160 460,180 465,270 C 470,340 400,360 310,320 Z" fill="#f8bbd0" stroke="#f06292" stroke-width="2"/>
+          <circle cx="420" cy="245" r="10" fill="#ffffff" opacity="0.7"/>
+          <!-- Bottom Right Wing -->
+          <path d="M 310,320 C 400,360 430,420 410,460 C 390,490 340,450 305,360 Z" fill="#e1bee7" stroke="#ba68c8" stroke-width="2"/>
+        </g>
+      `,
+      angel: `
+        <!-- Majestic White Feather Angel Wings -->
+        <g id="wings-angel" opacity="0.95" filter="url(#softGlow)">
+          <!-- Left Wing -->
+          <path d="M 230,290 C 140,160 70,220 60,330 C 50,420 110,480 140,510 C 130,460 150,410 230,340 Z" fill="#ffffff" stroke="#e1bee7" stroke-width="2"/>
+          <!-- Feather layers -->
+          <path d="M 120,340 Q 150,380 180,350 M 100,400 Q 130,440 160,400" stroke="#e1bee7" stroke-width="2" fill="none"/>
+          <!-- Right Wing -->
+          <path d="M 310,290 C 400,160 470,220 480,330 C 490,420 430,480 400,510 C 410,460 390,410 310,340 Z" fill="#ffffff" stroke="#e1bee7" stroke-width="2"/>
+          <path d="M 420,340 Q 390,380 360,350 M 440,400 Q 410,440 380,400" stroke="#e1bee7" stroke-width="2" fill="none"/>
+        </g>
+      `,
+      magic: `
+        <!-- Glowing Celestial Star Magic Circle Aura -->
+        <g id="aura-magic" transform="translate(270, 310)" opacity="0.85" filter="url(#magicGlow)">
+          <circle cx="0" cy="0" r="160" fill="none" stroke="#ffd54f" stroke-width="3" stroke-dasharray="10 8"/>
+          <circle cx="0" cy="0" r="145" fill="none" stroke="#ea80fc" stroke-width="1.8"/>
+          <!-- Octagram Star -->
+          <polygon points="0,-140 35,-35 140,0 35,35 0,140 -35,35 -140,0 -35,-35" fill="none" stroke="#ffd54f" stroke-width="2"/>
+          <polygon points="99,-99 25,-25 99,99 -25,25 -99,99 -25,-25 -99,-99 25,-25" fill="none" stroke="#ea80fc" stroke-width="1.5"/>
+        </g>
+      `
+    };
+
+    // 11. HANDHELD PROPS & COMPANIONS
+    const HANDHELD_DEFS = {
+      none: '',
+      wand: `
+        <!-- Magical Star Wand held in left hand -->
+        <g id="item-wand" transform="translate(195, 360) rotate(-22)">
+          <!-- Golden Wand Shaft -->
+          <rect x="-3" y="0" width="6" height="150" fill="url(#goldGrad)" rx="3" stroke="#b8860b" stroke-width="1"/>
+          <circle cx="0" cy="150" r="6" fill="#e91e63"/>
+          <!-- Star Topper with Angel Wings -->
+          <g transform="translate(0, 0)">
+            <!-- Little wings -->
+            <path d="M 0,0 C -25,-15 -35,15 -10,10 Z" fill="#ffffff" stroke="#ff80ab" stroke-width="1.5"/>
+            <path d="M 0,0 C 25,-15 35,15 10,10 Z" fill="#ffffff" stroke="#ff80ab" stroke-width="1.5"/>
+            <!-- Golden Star -->
+            <polygon points="0,-22 6,-6 22,0 6,6 0,22 -6,6 -22,0 -6,-6" fill="url(#goldGrad)" stroke="#b8860b" stroke-width="1.5" filter="url(#softGlow)"/>
+            <circle cx="0" cy="0" r="5" fill="#e91e63"/>
+          </g>
+        </g>
+      `,
+      sceptre: `
+        <!-- Royal Golden Sceptre with Sapphire Orb -->
+        <g id="item-sceptre" transform="translate(195, 360) rotate(-20)">
+          <rect x="-4" y="0" width="8" height="155" fill="url(#goldGrad)" rx="4" stroke="#b8860b" stroke-width="1.2"/>
+          <!-- Sapphire Orb Top -->
+          <circle cx="0" cy="-6" r="15" fill="#00e5ff" stroke="url(#goldGrad)" stroke-width="3" filter="url(#softGlow)"/>
+          <path d="M -6,-25 L 6,-25 M 0,-31 L 0,-19" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round"/>
+        </g>
+      `,
+      bunny: `
+        <!-- Princess Bunny Plushie held in right hand -->
+        <g id="item-bunny" transform="translate(325, 385)">
+          <!-- Bunny Body & Head -->
+          <ellipse cx="0" cy="15" rx="18" ry="20" fill="#ffffff" stroke="#ffccd9" stroke-width="1.5"/>
+          <circle cx="0" cy="-5" r="16" fill="#ffffff" stroke="#ffccd9" stroke-width="1.5"/>
+          <!-- Bunny Ears -->
+          <ellipse cx="-8" cy="-28" rx="5" ry="14" fill="#ffffff" stroke="#ffccd9" stroke-width="1.5"/>
+          <ellipse cx="-8" cy="-28" rx="2.5" ry="9" fill="#ff80ab"/>
+          <ellipse cx="8" cy="-28" rx="5" ry="14" fill="#ffffff" stroke="#ffccd9" stroke-width="1.5"/>
+          <ellipse cx="8" cy="-28" rx="2.5" ry="9" fill="#ff80ab"/>
+          <!-- Face -->
+          <circle cx="-5" cy="-6" r="2" fill="#212121"/>
+          <circle cx="5" cy="-6" r="2" fill="#212121"/>
+          <polygon points="0,-2 -2,-4 2,-4" fill="#ff4081"/>
+          <!-- Tiny Crown -->
+          <polygon points="-6,-20 0,-26 6,-20" fill="#ffd700"/>
+        </g>
+      `,
+      tea: `
+        <!-- Porcelain Royal Teacup with Saucer -->
+        <g id="item-tea" transform="translate(202, 405)">
+          <ellipse cx="0" cy="12" rx="16" ry="5" fill="#ffffff" stroke="#ffd166" stroke-width="1.5"/>
+          <path d="M -12,2 Q 0,16 12,2 Z" fill="#ffffff" stroke="#ffd166" stroke-width="1.5"/>
+          <!-- Steam -->
+          <path d="M -4,-2 Q -8,-12 -2,-18" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.6"/>
+          <path d="M 4,-2 Q 0,-12 6,-18" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.6"/>
+        </g>
+      `,
+      fan: `
+        <!-- Traditional Japanese Sakura Folding Fan -->
+        <g id="item-fan" transform="translate(200, 395) rotate(-35)">
+          <path d="M 0,0 L -35,-45 A 50,50 0 0,1 35,-45 Z" fill="#ff80ab" stroke="#c2185b" stroke-width="1.5"/>
+          <circle cx="0" cy="-35" r="5" fill="#ffffff"/>
+          <line x1="0" y1="0" x2="-35" y2="-45" stroke="#b8860b" stroke-width="2"/>
+          <line x1="0" y1="0" x2="35" y2="-45" stroke="#b8860b" stroke-width="2"/>
+          <line x1="0" y1="0" x2="0" y2="-50" stroke="#b8860b" stroke-width="2"/>
+        </g>
+      `
+    };
+
+    // 12. JEWELRY
+    const JEWELRY_DEFS = {
+      none: '',
+      pearl: `
+        <!-- Royal Double-Strand Pearl Necklace -->
+        <g id="jewel-pearl">
+          <path d="M 258,284 Q 270,296 282,284" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 2"/>
+          <path d="M 254,290 Q 270,305 286,290" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-dasharray="4.5 2"/>
+          <circle cx="270" cy="305" r="3.5" fill="#e91e63" stroke="url(#goldGrad)" stroke-width="1"/>
+        </g>
+      `,
+      heart: `
+        <!-- Crystal Ruby Heart Pendant -->
+        <g id="jewel-heart">
+          <path d="M 258,284 Q 270,300 282,284" fill="none" stroke="url(#goldGrad)" stroke-width="1.8"/>
+          <path d="M 270,302 C 270,302 264,296 264,292 A 3,3 0 0,1 270,290 A 3,3 0 0,1 276,292 C 276,296 270,302 270,302 Z" fill="#e91e63" stroke="url(#goldGrad)" stroke-width="1" filter="url(#softGlow)"/>
+        </g>
+      `,
+      velvet: `
+        <!-- Black Velvet Choker with Teardrop Jewel -->
+        <g id="jewel-velvet">
+          <path d="M 262,280 L 278,280" stroke="#212121" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="270" cy="284" r="3" fill="#00e5ff" stroke="url(#goldGrad)" stroke-width="1"/>
+        </g>
+      `
+    };
+
+    /* =====================================================================
+       WARDROBE DATABASE ITEMS LIST FOR TABS
+       ===================================================================== */
+    const WARDROBE_ITEMS = {
+      dress: [
+        { id: 'royal', name: 'Dạ Hội Hoàng Gia', icon: '👑', tag: 'Công chúa' },
+        { id: 'sakura', name: 'Kimono Hoa Anh Đào', icon: '🌸', tag: 'Nhật Bản' },
+        { id: 'star', name: 'Tinh Tú Ma Thuật', icon: '✨', tag: 'Phép thuật' },
+        { id: 'fairy', name: 'Tiên Nữ Cánh Hoa', icon: '🧚', tag: 'Thiên nhiên' },
+        { id: 'mermaid', name: 'Hải Âu Tiên Cá', icon: '🌊', tag: 'Thủy cung' },
+        { id: 'lolita', name: 'Idol Thỏ Con Lolita', icon: '🎀', tag: 'Dễ thương' },
+        { id: 'frost', name: 'Băng Tuyết Pha Lê', icon: '❄️', tag: 'Nữ hoàng' },
+        { id: 'academy', name: 'Đồng Phục Quý Tộc', icon: '🎓', tag: 'Học viện' }
+      ],
+      hair: [
+        { id: 'wavy', name: 'Tóc Uốn Sóng Dài', icon: '👸', tag: 'Phần sau' },
+        { id: 'twins', name: 'Tóc Cột Hai Bên', icon: '👧', tag: 'Phần sau' },
+        { id: 'royal', name: 'Tóc Lọn Quý Phái', icon: '✨', tag: 'Phần sau' },
+        { id: 'straight', name: 'Tóc Suôn Dài Hime', icon: '💇', tag: 'Phần sau' },
+        { id: 'bob', name: 'Tóc Ngắn Bồng Bềnh', icon: '🎀', tag: 'Phần sau' }
+      ],
+      eyes: [
+        { id: 'sapphire', name: 'Mắt Lam Tinh Vân', icon: '💙', tag: 'Long lanh' },
+        { id: 'ruby', name: 'Mắt Hồng Ruby', icon: '💖', tag: 'Ngọt ngào' },
+        { id: 'amethyst', name: 'Mắt Tím Thạch Anh', icon: '💜', tag: 'Huyền bí' },
+        { id: 'emerald', name: 'Mắt Ngọc Lục Bảo', icon: '💚', tag: 'Trong trẻo' },
+        { id: 'topaz', name: 'Mắt Vàng Hoàng Kim', icon: '💛', tag: 'Rực rỡ' },
+        { id: 'wink', name: 'Nháy Mắt Tinh Nghịch', icon: '😉', tag: 'Đáng yêu' },
+        { id: 'hearts', name: 'Mắt Trái Tim Si Tình', icon: '😍', tag: 'Mê đắm' }
+      ],
+      headwear: [
+        { id: 'none', name: 'Không Đội Mũ', icon: '❌', tag: 'Để trống' },
+        { id: 'crown', name: 'Vương Miện Vàng', icon: '👑', tag: 'Hoàng tộc' },
+        { id: 'bow', name: 'Nơ Lụa Khổng Lồ', icon: '🎀', tag: 'Lolita' },
+        { id: 'catears', name: 'Tai Mèo Ren Quý Tộc', icon: '🐱', tag: 'Dễ thương' },
+        { id: 'sakurapin', name: 'Kẹp Hoa Kanzashi', icon: '🌸', tag: 'Nhật Bản' },
+        { id: 'wreath', name: 'Vòng Hoa Tiên Nữ', icon: '🌺', tag: 'Cổ tích' }
+      ],
+      shoes: [
+        { id: 'glass', name: 'Giày Thủy Tinh', icon: '👠', tag: 'Lọ lem' },
+        { id: 'maryjane', name: 'Giày Mary Jane', icon: '🩰', tag: 'Dễ thương' },
+        { id: 'boots', name: 'Bốt Buộc Ruy Băng', icon: '👢', tag: 'Quý tộc' },
+        { id: 'geta', name: 'Guốc Gỗ Nhật Bản', icon: '🩴', tag: 'Truyền thống' }
+      ],
+      wings: [
+        { id: 'none', name: 'Không Có Cánh', icon: '❌', tag: 'Để trống' },
+        { id: 'fairy', name: 'Cánh Bướm Tiên Nữ', icon: '🦋', tag: 'Phát sáng' },
+        { id: 'angel', name: 'Cánh Thiên Thần', icon: '🪽', tag: 'Lông vũ' },
+        { id: 'magic', name: 'Vòng Tròn Ma Pháp', icon: '🔯', tag: 'Aura phép' }
+      ],
+      handheld: [
+        { id: 'none', name: 'Không Cầm Gì', icon: '❌', tag: 'Để trống' },
+        { id: 'wand', name: 'Gậy Phép Ngôi Sao', icon: '🪄', tag: 'Ma thuật' },
+        { id: 'sceptre', name: 'Quyền Trượng Ngọc', icon: '⚜️', tag: 'Quyền lực' },
+        { id: 'bunny', name: 'Bé Thỏ Bông', icon: '🐰', tag: 'Thú cưng' },
+        { id: 'tea', name: 'Tách Trà Quý Tộc', icon: '☕', tag: 'Tao nhã' },
+        { id: 'fan', name: 'Quạt Xếp Anh Đào', icon: '🪭', tag: 'Nhật Bản' }
+      ],
+      jewelry: [
+        { id: 'none', name: 'Không Đeo', icon: '❌', tag: 'Để trống' },
+        { id: 'pearl', name: 'Ngọc Trai Đôi', icon: '📿', tag: 'Hoàng gia' },
+        { id: 'heart', name: 'Trái Tim Ruby', icon: '❤️', tag: 'Pha lê' },
+        { id: 'velvet', name: 'Vòng Cổ Nhung Đen', icon: '🖤', tag: 'Quý phái' }
+      ],
+      bg: [
+        { id: 'palace', name: 'Cung Điện Hoàng Gia', icon: '🏰', tag: 'Ban công hồng' },
+        { id: 'sakura', name: 'Đêm Hoa Anh Đào', icon: '🌸', tag: 'Cổng Torii' },
+        { id: 'starry', name: 'Trăng Sao Tinh Tú', icon: '🌌', tag: 'Dải ngân hà' },
+        { id: 'forest', name: 'Rừng Tiên Nấm Sáng', icon: '🍄', tag: 'Huyền bí' },
+        { id: 'bedroom', name: 'Phòng Ngủ Công Chúa', icon: '🛏️', tag: 'Ấm cúng' }
+      ]
+    };
+
+    /* =====================================================================
+       RENDER LOGIC & UPDATERS
+       ===================================================================== */
+    function updateHairPalette(colorName) {
+      DOLL_STATE.hairColor = colorName;
+      const palette = HAIR_PALETTES[colorName] || HAIR_PALETTES.pink;
+      document.getElementById('hairGrad-stop0').setAttribute('stop-color', palette.stop0);
+      document.getElementById('hairGrad-stop1').setAttribute('stop-color', palette.stop1);
+      document.getElementById('hairGrad-stop2').setAttribute('stop-color', palette.stop2);
+      document.documentElement.style.setProperty('--hair-stroke', palette.stroke);
+
+      document.querySelectorAll('.color-dot').forEach(dot => {
+        dot.classList.toggle('active', dot.dataset.color === colorName);
+      });
+    }
+
+    function renderDoll() {
+      // 1. Background
+      document.getElementById('layer-bg').innerHTML = BG_DEFS[DOLL_STATE.bg] || BG_DEFS.palace;
+
+      // 2. Wings & Back Aura
+      document.getElementById('layer-wings').innerHTML = WINGS_DEFS[DOLL_STATE.wings] || '';
+
+      // 3. Back Hair
+      document.getElementById('layer-back-hair').innerHTML = BACK_HAIR_DEFS[DOLL_STATE.backHair] || BACK_HAIR_DEFS.wavy;
+
+      // 4. Eyes & Expressions
+      const eyeRenderer = EYES_DEFS[DOLL_STATE.eyes] || EYES_DEFS.sapphire;
+      document.getElementById('face-eyes').innerHTML = eyeRenderer();
+      document.getElementById('face-mouth').innerHTML = MOUTH_DEFS[DOLL_STATE.mouth] || MOUTH_DEFS.smile;
+
+      // 5. Socks & Shoes
+      document.getElementById('layer-socks').innerHTML = SOCKS_DEFS[DOLL_STATE.socks] || '';
+      document.getElementById('layer-shoes').innerHTML = SHOES_DEFS[DOLL_STATE.shoes] || SHOES_DEFS.glass;
+
+      // 6. Dress
+      document.getElementById('layer-dress').innerHTML = DRESS_DEFS[DOLL_STATE.dress] || DRESS_DEFS.royal;
+
+      // 7. Jewelry
+      document.getElementById('layer-jewelry').innerHTML = JEWELRY_DEFS[DOLL_STATE.jewelry] || '';
+
+      // 8. Front Hair
+      document.getElementById('layer-front-hair').innerHTML = FRONT_HAIR_DEFS[DOLL_STATE.frontHair] || FRONT_HAIR_DEFS.hime;
+
+      // 9. Headwear
+      document.getElementById('layer-headwear').innerHTML = HEADWEAR_DEFS[DOLL_STATE.headwear] || '';
+
+      // 10. Handheld items
+      document.getElementById('layer-handheld').innerHTML = HANDHELD_DEFS[DOLL_STATE.handheld] || '';
+    }
+
+    /* Toast Notification popup */
+    function showToast(text, icon = '✨') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-text').textContent = text;
+      document.getElementById('toast-icon').textContent = icon;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    /* Tab Switcher & Wardrobe Grid Builder */
+    let currentTab = 'dress';
+
+    function buildWardrobeGrid(tabName) {
+      currentTab = tabName;
+      const grid = document.getElementById('items-grid');
+      grid.innerHTML = '';
+      const items = WARDROBE_ITEMS[tabName] || [];
+
+      // Determine palette bar visibility (show color dots when in 'hair' tab)
+      const paletteBar = document.getElementById('palette-container');
+      paletteBar.style.display = (tabName === 'hair') ? 'flex' : 'none';
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+
+        // Check if currently selected
+        const isCurrent = (
+          (tabName === 'dress' && DOLL_STATE.dress === item.id) ||
+          (tabName === 'hair' && DOLL_STATE.backHair === item.id) ||
+          (tabName === 'eyes' && DOLL_STATE.eyes === item.id) ||
+          (tabName === 'headwear' && DOLL_STATE.headwear === item.id) ||
+          (tabName === 'shoes' && DOLL_STATE.shoes === item.id) ||
+          (tabName === 'wings' && DOLL_STATE.wings === item.id) ||
+          (tabName === 'handheld' && DOLL_STATE.handheld === item.id) ||
+          (tabName === 'jewelry' && DOLL_STATE.jewelry === item.id) ||
+          (tabName === 'bg' && DOLL_STATE.bg === item.id)
+        );
+
+        if (isCurrent) card.classList.add('active');
+
+        card.innerHTML = `
+          <div class="item-thumb">
+            <span class="emoji-icon">${item.icon}</span>
+          </div>
+          <div class="item-name">${item.name}</div>
+          <div class="item-tag">${item.tag}</div>
+        `;
+
+        card.addEventListener('click', () => {
+          sound.playPop();
+          sound.playSparkle();
+
+          // Apply item to state
+          if (tabName === 'dress') DOLL_STATE.dress = item.id;
+          else if (tabName === 'hair') DOLL_STATE.backHair = item.id;
+          else if (tabName === 'eyes') DOLL_STATE.eyes = item.id;
+          else if (tabName === 'headwear') DOLL_STATE.headwear = item.id;
+          else if (tabName === 'shoes') DOLL_STATE.shoes = item.id;
+          else if (tabName === 'wings') DOLL_STATE.wings = item.id;
+          else if (tabName === 'handheld') DOLL_STATE.handheld = item.id;
+          else if (tabName === 'jewelry') DOLL_STATE.jewelry = item.id;
+          else if (tabName === 'bg') DOLL_STATE.bg = item.id;
+
+          renderDoll();
+          buildWardrobeGrid(tabName);
+          showToast(`Đã chọn: ${item.name}`, item.icon);
+
+          // Spawn sparkles at center of stage
+          const rect = document.getElementById('princess-svg').getBoundingClientRect();
+          createSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2, 14);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // Tab buttons event listeners
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        sound.playPop(520);
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        buildWardrobeGrid(btn.dataset.tab);
+      });
+    });
+
+    // Hair Color Dot listeners
+    document.querySelectorAll('.color-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        sound.playPop(700);
+        sound.playSparkle();
+        updateHairPalette(dot.dataset.color);
+        renderDoll();
+        showToast(`Đã đổi màu tóc: ${dot.title}`, '🌸');
+      });
+    });
+
+    /* =====================================================================
+       FEATURE: RANDOMIZE / GACHA OUTFIT
+       ===================================================================== */
+    function randomizeOutfit() {
+      sound.playMagic();
+      const pick = arr => arr[Math.floor(Math.random() * arr.length)].id;
+      const pickColor = () => Object.keys(HAIR_PALETTES)[Math.floor(Math.random() * Object.keys(HAIR_PALETTES).length)];
+
+      DOLL_STATE.dress = pick(WARDROBE_ITEMS.dress);
+      DOLL_STATE.backHair = pick(WARDROBE_ITEMS.hair);
+      DOLL_STATE.eyes = pick(WARDROBE_ITEMS.eyes);
+      DOLL_STATE.headwear = pick(WARDROBE_ITEMS.headwear);
+      DOLL_STATE.shoes = pick(WARDROBE_ITEMS.shoes);
+      DOLL_STATE.wings = pick(WARDROBE_ITEMS.wings);
+      DOLL_STATE.handheld = pick(WARDROBE_ITEMS.handheld);
+      DOLL_STATE.jewelry = pick(WARDROBE_ITEMS.jewelry);
+      DOLL_STATE.bg = pick(WARDROBE_ITEMS.bg);
+
+      // Randomize hair color & mouth
+      updateHairPalette(pickColor());
+      const mouths = ['smile', 'open', 'cat', 'pout'];
+      DOLL_STATE.mouth = mouths[Math.floor(Math.random() * mouths.length)];
+
+      renderDoll();
+      buildWardrobeGrid(currentTab);
+      showToast('Đã phối trang phục ngẫu nhiên siêu xinh!', '🎲');
+
+      const rect = document.getElementById('princess-svg').getBoundingClientRect();
+      createSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2, 25);
+    }
+
+    document.getElementById('btn-randomize').addEventListener('click', randomizeOutfit);
+    document.getElementById('btn-quick-random').addEventListener('click', randomizeOutfit);
+    document.getElementById('tool-random').addEventListener('click', randomizeOutfit);
+
+    /* =====================================================================
+       FEATURE: RESET DOLL
+       ===================================================================== */
+    function resetDoll() {
+      sound.playPop(400);
+      DOLL_STATE.hairColor = 'pink';
+      DOLL_STATE.backHair = 'wavy';
+      DOLL_STATE.frontHair = 'hime';
+      DOLL_STATE.eyes = 'sapphire';
+      DOLL_STATE.mouth = 'smile';
+      DOLL_STATE.dress = 'royal';
+      DOLL_STATE.shoes = 'glass';
+      DOLL_STATE.socks = 'lace';
+      DOLL_STATE.headwear = 'crown';
+      DOLL_STATE.wings = 'fairy';
+      DOLL_STATE.handheld = 'wand';
+      DOLL_STATE.jewelry = 'pearl';
+      DOLL_STATE.bg = 'palace';
+
+      updateHairPalette('pink');
+      renderDoll();
+      buildWardrobeGrid(currentTab);
+      showToast('Đã thiết lập lại trang phục!', '🔄');
+    }
+    document.getElementById('btn-reset').addEventListener('click', resetDoll);
+
+    /* =====================================================================
+       FEATURE: BLINK ANIMATION
+       ===================================================================== */
+    function blinkEyes() {
+      sound.playPop(850);
+      const originalEyes = DOLL_STATE.eyes;
+      DOLL_STATE.eyes = 'wink';
+      renderDoll();
+      setTimeout(() => {
+        DOLL_STATE.eyes = originalEyes;
+        renderDoll();
+      }, 350);
+    }
+    document.getElementById('btn-blink').addEventListener('click', blinkEyes);
+
+    // Auto idle blink every 5-8 seconds
+    setInterval(() => {
+      if (Math.random() < 0.6 && DOLL_STATE.eyes !== 'wink' && DOLL_STATE.eyes !== 'hearts') {
+        const eyeGroup = document.getElementById('face-eyes');
+        if (eyeGroup) {
+          eyeGroup.style.transformOrigin = '270px 182px';
+          eyeGroup.style.transform = 'scaleY(0.08)';
+          setTimeout(() => {
+            eyeGroup.style.transform = 'scaleY(1)';
+          }, 140);
+        }
+      }
+    }, 5500);
+
+    /* =====================================================================
+       FEATURE: SAVE & EXPORT HIGH RESOLUTION PNG
+       ===================================================================== */
+    function captureAndSavePhoto() {
+      sound.playShutter();
+      const svgEl = document.getElementById('princess-svg');
+      const svgData = new XMLSerializer().serializeToString(svgEl);
+      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const URL = window.URL || window.webkitURL || window;
+      const blobURL = URL.createObjectURL(svgBlob);
+
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1400; // Crisp 2x HD quality
+        const ctx = canvas.getContext('2d');
+
+        // Draw character
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // Draw cute kawaii photo frame overlay
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 20;
+        ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+        // Outer pink border
+        ctx.strokeStyle = '#ff7597';
+        ctx.lineWidth = 6;
+        ctx.strokeRect(32, 32, canvas.width - 64, canvas.height - 64);
+
+        // Watermark stamp at bottom
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.beginPath();
+        ctx.roundRect(canvas.width / 2 - 260, canvas.height - 110, 520, 60, 30);
+        ctx.fill();
+
+        ctx.font = 'bold 28px "Quicksand", sans-serif';
+        ctx.fillStyle = '#ff4d79';
+        ctx.textAlign = 'center';
+        ctx.fillText('🌸 Công Chúa Chibi • Nhật Bản ✨', canvas.width / 2, canvas.height - 70);
+
+        const dataUrl = canvas.toDataURL('image/png');
+        document.getElementById('photo-img-preview').src = dataUrl;
+        document.getElementById('btn-download-link').href = dataUrl;
+        document.getElementById('photo-modal').classList.add('active');
+        showToast('Ảnh chân dung đã sẵn sàng!', '📸');
+      };
+      img.src = blobURL;
+    }
+
+    document.getElementById('btn-save-photo').addEventListener('click', captureAndSavePhoto);
+    document.getElementById('btn-quick-photo').addEventListener('click', captureAndSavePhoto);
+    document.getElementById('tool-snap').addEventListener('click', captureAndSavePhoto);
+
+    document.getElementById('btn-close-modal').addEventListener('click', () => {
+      document.getElementById('photo-modal').classList.remove('active');
+    });
+
+    document.getElementById('photo-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'photo-modal') {
+        document.getElementById('photo-modal').classList.remove('active');
+      }
+    });
+
+    /* =====================================================================
+       AUDIO TOGGLE (MUSIC BOX BGM)
+       ===================================================================== */
+    const btnSound = document.getElementById('btn-toggle-sound');
+    btnSound.addEventListener('click', () => {
+      const isPlaying = sound.toggleBGM();
+      document.getElementById('sound-icon').textContent = isPlaying ? '🎵' : '🔇';
+      document.getElementById('sound-text').textContent = isPlaying ? 'Nhạc: Bật' : 'Nhạc: Tắt';
+      showToast(isPlaying ? 'Đã bật nhạc hộp âm nhạc kawaii!' : 'Đã tắt nhạc', isPlaying ? '🎵' : '🔇');
+    });
+
+    /* Floating tool sparkle button */
+    document.getElementById('tool-sparkle').addEventListener('click', (e) => {
+      sound.playSparkle();
+      createSparkles(window.innerWidth / 2, window.innerHeight / 2, 40, true);
+      createSparkles(window.innerWidth / 2, window.innerHeight / 2, 30, false);
+      showToast('Mưa hoa anh đào & tinh tú lấp lánh!', '🌸');
+    });
+
+    /* =====================================================================
+       INITIAL STARTUP
+       ===================================================================== */
+    updateHairPalette('pink');
+    renderDoll();
+    buildWardrobeGrid('dress');
+  </script>
+</body>
+</html>
